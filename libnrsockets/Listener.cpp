@@ -25,7 +25,7 @@
 #include "Listener.h"
 
 #include <libnrcore/types.h>
-#include <nrdebug/Log.h>
+#include <libnrdebug/Log.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,7 +43,7 @@
 #include <errno.h>
 #include <err.h>
 
-#include <nrthreads/Thread.h>
+#include <libnrthreads/Thread.h>
 #include "Socket.h"
 
 #ifndef SERVER_LISTENER_BACKLOG

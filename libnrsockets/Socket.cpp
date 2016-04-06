@@ -25,7 +25,7 @@
 #include "Socket.h"
 
 #include <libnrcore/types.h>
-#include <nrdebug/Log.h>
+#include <libnrdebug/Log.h>
 #include <libnrcore/memory/String.h>
 #include <libnrcore/memory/StringList.h>
 

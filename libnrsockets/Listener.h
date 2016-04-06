@@ -25,9 +25,9 @@
 #ifndef __PeerConnector__Listener__
 #define __PeerConnector__Listener__
 
-#include <libnrcore/threading/Thread.h>
-#include <libnrcore/threading/Task.h>
-#include <libnrcore/event/EventBase.h>
+#include <libnrthreads/Thread.h>
+#include <libnrthreads/Task.h>
+#include <libnrevent/EventBase.h>
 
 #if defined(__ANDROID__)
 #include <linux/in.h>

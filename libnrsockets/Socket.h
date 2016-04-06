@@ -27,16 +27,16 @@
 
 #include <errno.h>
 
-#include <libnrcore/event/EventBase.h>
+#include <libnrevent/EventBase.h>
 
-#include <libnrcore/io/Stream.h>
+#include <libnrio/Stream.h>
 #include <libnrcore/memory/Memory.h>
 #include <libnrcore/memory/StaticArray.h>
 #include <libnrcore/memory/DescriptorInstanceMap.h>
-#include <libnrcore/threading/Thread.h>
-#include <libnrcore/debug/Log.h>
+#include <libnrthreads/Thread.h>
+#include <libnrdebug/Log.h>
 
-#include <libnrcore/threading/TaskMutex.h>
+#include <libnrthreads/TaskMutex.h>
 
 #include "Address.h"
 #include "Buffer.h"

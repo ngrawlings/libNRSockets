@@ -25,7 +25,7 @@
 #ifndef __PeerConnectorCore__Buffer__
 #define __PeerConnectorCore__Buffer__
 
-#include <libnrcore/threading/Mutex.h>
+#include <libnrthreads/Mutex.h>
 #include <libnrcore/memory/ByteArray.h>
 #include <libnrcore/memory/LinkedList.h>
 

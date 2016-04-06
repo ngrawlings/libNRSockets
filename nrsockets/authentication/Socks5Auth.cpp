@@ -8,7 +8,7 @@
 
 #include "Socks5Auth.h"
 
-#include <libnrcore/socket/Socks5.h>
+#include "../Socks5.h"
 
 namespace nrcore {
   

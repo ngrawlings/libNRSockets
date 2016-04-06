@@ -9,7 +9,7 @@
 #ifndef __libNRCore__ReliableUdp__
 #define __libNRCore__ReliableUdp__
 
-#include "UdpSocket.h"
+/*#include "UdpSocket.h"
 #include <libnrcore/memory/RingBuffer.h>
 
 #define ACK_PRESENT_BIT     0x80000000
@@ -29,11 +29,11 @@ namespace nrcore {
         virtual void disconnected() {};
         
     private:
-        /*
+        /
          L1 [31 ACK Present, 30 ACK Required, ...]
          W2 length
          L3 (Optional) ACK
-         */
+         /
         
         typedef struct {
             unsigned int offset;
@@ -53,6 +53,6 @@ namespace nrcore {
         
     };
     
-};
+};*/
 
 #endif /* defined(__libNRCore__ReliableUdp__) */

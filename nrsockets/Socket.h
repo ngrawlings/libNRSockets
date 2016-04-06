@@ -27,16 +27,16 @@
 
 #include <errno.h>
 
-#include <libnrcore/event/EventBase.h>
+#include <nrevent/EventBase.h>
 
-#include <libnrcore/io/Stream.h>
+#include <nrio/Stream.h>
 #include <libnrcore/memory/Memory.h>
 #include <libnrcore/memory/StaticArray.h>
 #include <libnrcore/memory/DescriptorInstanceMap.h>
-#include <libnrcore/threading/Thread.h>
-#include <libnrcore/debug/Log.h>
+#include <nrthreads/Thread.h>
+#include <nrdebug/Log.h>
 
-#include <libnrcore/threading/TaskMutex.h>
+#include <nrthreads/TaskMutex.h>
 
 #include "Address.h"
 #include "Buffer.h"
@@ -165,7 +165,6 @@ namespace nrcore {
             Socket *socket;
         };
         
-        Mutex operation_lock;
         static Mutex *release_lock;
         
         STATE state;

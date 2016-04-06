@@ -25,7 +25,7 @@
 #include "Listener.h"
 
 #include <libnrcore/types.h>
-#include <libnrcore/debug/Log.h>
+#include <nrdebug/Log.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,7 +43,7 @@
 #include <errno.h>
 #include <err.h>
 
-#include <libnrcore/threading/Thread.h>
+#include <nrthreads/Thread.h>
 #include "Socket.h"
 
 #ifndef SERVER_LISTENER_BACKLOG
@@ -121,6 +121,7 @@ namespace nrcore {
         }
         
         if (thread) {
+            breakEventLoop();
             thread->signal(SIGINT);
             thread->waitUntilFinished();
         }

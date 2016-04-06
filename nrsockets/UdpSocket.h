@@ -9,20 +9,20 @@
 #ifndef __libNRCore__UdpSocket__
 #define __libNRCore__UdpSocket__
 
-#include <errno.h>
+/*#include <errno.h>
 
-#include <libnrcore/event/EventBase.h>
+#include <nrevent/EventBase.h>
 
-#include <libnrcore/io/Stream.h>
+#include <nrio/Stream.h>
 #include <libnrcore/memory/RefArray.h>
 #include <libnrcore/memory/Memory.h>
 #include <libnrcore/memory/ByteArray.h>
 #include <libnrcore/memory/StaticArray.h>
 #include <libnrcore/memory/StringList.h>
-#include <libnrcore/threading/Thread.h>
-#include <libnrcore/debug/Log.h>
+#include <nrthreads/Thread.h>
+#include <nrdebug/Log.h>
 
-#include <libnrcore/threading/TaskMutex.h>
+#include <nrthreads/TaskMutex.h>
 
 #include "Address.h"
 
@@ -79,6 +79,6 @@ namespace nrcore {
         int mtu;
     };
 
-};
+};*/
 
 #endif /* defined(__libNRCore__UdpSocket__) */

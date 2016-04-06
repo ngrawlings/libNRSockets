@@ -18,7 +18,7 @@
                BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
                BuildableName = "libNrSockets.a"
                BlueprintName = "NrSockets"
-               ReferencedContainer = "container:NrSockets.xcodeproj">
+               ReferencedContainer = "container:LibNrSockets.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -30,6 +30,15 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
+            BuildableName = "libNrSockets.a"
+            BlueprintName = "NrSockets"
+            ReferencedContainer = "container:NrSockets.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -43,15 +52,6 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
-            BuildableName = "libNrSockets.a"
-            BlueprintName = "NrSockets"
-            ReferencedContainer = "container:NrSockets.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -61,15 +61,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
-            BuildableName = "libNrSockets.a"
-            BlueprintName = "NrSockets"
-            ReferencedContainer = "container:NrSockets.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

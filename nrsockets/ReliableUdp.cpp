@@ -8,7 +8,7 @@
 
 #include "ReliableUdp.h"
 
-namespace nrcore {
+/*namespace nrcore {
 
     ReliableUdp::ReliableUdp(EventBase *event_base, String interface, Address::ADDRESS_TYPE iptype, unsigned short port) :
         UdpSocket(event_base, interface, iptype, port), read_buffer(16383), write_buffer(8192)
@@ -34,3 +34,4 @@ namespace nrcore {
     }
 
 };
+*/

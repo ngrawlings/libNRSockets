@@ -284,6 +284,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/opt/libevent/include,
+					"\"$(SRCROOT)/../libNRCore\"",
+					"\"$(SRCROOT)/../libNrIO\"",
+					"\"$(SRCROOT)/../libNrEvent\"",
+					"\"$(SRCROOT)/../libNrThreads\"",
+					"\"$(SRCROOT)/../libNrMemory\"",
+					"\"$(SRCROOT)/../libNrDebug\"",
+					"\"$(SRCROOT)/\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -292,6 +302,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				HEADER_SEARCH_PATHS = (
+					/usr/local/opt/libevent/include,
+					"\"$(SRCROOT)/../libNRCore\"",
+					"\"$(SRCROOT)/../libNrIO\"",
+					"\"$(SRCROOT)/../libNrEvent\"",
+					"\"$(SRCROOT)/../libNrThreads\"",
+					"\"$(SRCROOT)/../libNrMemory\"",
+					"\"$(SRCROOT)/../libNrDebug\"",
+					"\"$(SRCROOT)/\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

@@ -8,7 +8,7 @@
 
 #include "UdpSocket.h"
 
-#include <arpa/inet.h>
+/*#include <arpa/inet.h>
 #include <sys/socket.h>
 #include <net/if.h>
 #include <sys/ioctl.h>
@@ -160,3 +160,4 @@ namespace nrcore {
     }
     
 };
+*/

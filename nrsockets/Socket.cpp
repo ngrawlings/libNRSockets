@@ -25,7 +25,7 @@
 #include "Socket.h"
 
 #include <libnrcore/types.h>
-#include <libnrcore/debug/Log.h>
+#include <nrdebug/Log.h>
 #include <libnrcore/memory/String.h>
 #include <libnrcore/memory/StringList.h>
 
@@ -59,7 +59,6 @@ namespace nrcore {
     
     Socket::Socket(EventBase *event_base, const char* addr) : Stream(0),
                 event_read(0), event_write(0), event_base(event_base), output_buffer(this),
-                operation_lock(C("operation_lock")),
                 receiver(this),
                 transmission(this),
                 state(OPEN)
@@ -85,7 +84,6 @@ namespace nrcore {
     
     Socket::Socket(EventBase *event_base, const char* addr, unsigned short port) : Stream(0),
                 event_read(0), event_write(0), event_base(event_base), output_buffer(this),
-                operation_lock(C("operation_lock")),
                 receiver(this),
                 transmission(this),
                 state(OPEN)
@@ -99,7 +97,6 @@ namespace nrcore {
 
     Socket::Socket(EventBase *event_base, int _fd) : Stream(_fd),
                 event_base(event_base), output_buffer(this),
-                operation_lock(C("operation_lock")),
                 receiver(this),
                 transmission(this),
                 state(OPEN)
@@ -163,12 +160,6 @@ namespace nrcore {
         ssize_t read;
  
         recv_lock.setBusy();
-        
-        if (socket->state != OPEN) {
-            if (recv_lock.isLockedByMe())
-                recv_lock.release();
-            return;
-        }
 
         read = ::recv(socket->fd, recv_buf, buf_sz, MSG_PEEK);
         while (read > 0) {
@@ -280,27 +271,18 @@ namespace nrcore {
     }
     
     void Socket::close() {
-        if (operation_lock.isLockedByMe())
-            return;
-        
-        operation_lock.lock(0, "close");
-        
         if (!fd) {
-            operation_lock.release();
             return;
         }
         
         descriptors_lock->lock();
         if (descriptors->get(fd) != this) {
-            operation_lock.release();
             descriptors_lock->release();
             return;
         }
             
         descriptors->set(fd, 0);
         descriptors_lock->release();
-        
-        operation_lock.release();
         
         try {
             if (state != CLOSED) {
@@ -311,7 +293,6 @@ namespace nrcore {
                 disconnected();
             }
 
-            operation_lock.lock(0, "close");
             if ( (event_read && event_pending(event_read, EV_READ, 0)) || (event_write && event_pending(event_write, EV_WRITE, 0)) ) {
                 event_active(event_read, 0, 0);
                 event_active(event_write, 0, 0);
@@ -320,9 +301,6 @@ namespace nrcore {
         } catch (...) {
             LOG(Log::LOGLEVEL_NOTICE, "Socket Close - Unknown Exception");
         }
-        
-        if (operation_lock.isLockedByMe())
-            operation_lock.release();
     }
     
     void Socket::shutdown() {
@@ -334,15 +312,11 @@ namespace nrcore {
     }
 
     void Socket::release() {
-        operation_lock.lock(0, "release");
-        
         if (state != RELEASED) {
             if (state != CLOSED)
                 close();
         
             state = RELEASED;
-            
-            operation_lock.release();
             
             LOG(Log::LOGLEVEL_NOTICE, "Socket Released: %p", this);
             
@@ -355,9 +329,6 @@ namespace nrcore {
             
         } else
             LOG(Log::LOGLEVEL_ERROR, "Socket Already Released: fd %d", fd);
-        
-        if (operation_lock.isLockedByMe())
-            operation_lock.release();
     }
 
     size_t Socket::getTransmitionQueueSize() {
@@ -376,7 +347,7 @@ namespace nrcore {
     void Socket::ev_read(int fd, short ev, void *arg) {
         Socket *client = reinterpret_cast<Socket*>(arg);
             
-        if (client->receiver.recv_lock.getState() == TaskMutex::WAITING && client->operation_lock.tryLock("ev_read")) {
+        if (client->receiver.recv_lock.getState() == TaskMutex::WAITING) {
 
             if ( client->state == OPEN ) {                
                 if (client->receiver.recv_lock.tryLock()) {
@@ -391,9 +362,6 @@ namespace nrcore {
             }
 
         }
-            
-        if (client && client->operation_lock.isLockedByMe())
-            client->operation_lock.release();
     }
 
     void Socket::ev_write(int fd, short ev, void *arg) {

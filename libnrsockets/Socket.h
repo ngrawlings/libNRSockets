@@ -1,229 +1,85 @@
 //
-//  Socket.h
-//  libNRCore
+//  Socket.hpp
+//  decap
 //
-//  Created by Nyhl Rawlings on 31/12/2012.
-//  Copyright (c) 2012. All rights reserved.
-//
-// This library is free software; you can redistribute it and/or
-// modify it under the terms of the GNU Lesser General Public
-// License as published by the Free Software Foundation; either
-// version 2.1 of the License, or (at your option) any later version.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-//
-// You should have received a copy of the GNU Lesser General Public
-// License along with this library; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
-//
-// For affordable commercial licensing please contact nyhl@ngrawlings.com
+//  Created by Nyhl on 18/03/16.
+//  Copyright © 2016 Liquidsoft Studio. All rights reserved.
 //
 
-#ifndef __PeerConnector__Socket__
-#define __PeerConnector__Socket__
+#ifndef Socket_hpp
+#define Socket_hpp
+
+#include <libnrevent/EventBase.h>
+#include <libnrthreads/Mutex.h>
+
+#include <libnrcore/memory/RingBuffer.h>
 
 #include <errno.h>
 
-#include <libnrevent/EventBase.h>
+using namespace nrcore;
 
-#include <libnrio/Stream.h>
-#include <libnrcore/memory/Memory.h>
-#include <libnrcore/memory/StaticArray.h>
-#include <libnrcore/memory/DescriptorInstanceMap.h>
-#include <libnrthreads/Thread.h>
-#include <libnrdebug/Log.h>
-
-#include <libnrthreads/TaskMutex.h>
-
-#include "Address.h"
-#include "Buffer.h"
-
-namespace nrcore {
-
-    class Socket : public Stream {
-    public:        
-        enum STATE {
-            OPEN,
-            CLOSED,
-            RELEASED
-        };
-        
+class Socket {
+public:
+    friend class ReceiveTask;
+    
+    Socket(EventBase *event_base, int _fd);
+    virtual ~Socket();
+    
+    size_t available();
+    Memory read(int max);
+    int send(const char* buffer, size_t len);
+    
+    static void init();
+    static void cleanup();
+    
+protected:
+    class ReceiveTask : public Task {
     public:
-        Socket(EventBase *event_base, const char* addr);
-        Socket(EventBase *event_base, const char* addr, unsigned short port);
-        Socket(EventBase *event_base, int _fd);
+        friend class Socket;
         
-        virtual ~Socket();
+        ReceiveTask(Socket *socket);
+        virtual ~ReceiveTask();
         
-        ssize_t write(const char* buf, size_t sz);
-        ssize_t read(char* buf, size_t sz);
+        void run();
         
-        virtual int send(const char *bytes, const int len);
-        void poll();
-        void close();
-        void shutdown();
+        bool isLocked();
         
-        void release();
-        
-        size_t getTransmitionQueueSize();
-        void flush();
-        
-        static int connect(Address &address, unsigned short port);
-        static int connect(const char* addr, unsigned short port);
-        
-        static void initSocketSubSystem();
-        static void releaseSocketSubsystem();
-        
-        static LinkedList<Socket*> getOpenSockets();
-        static void closeAllSockets();
-        
-        static Mutex *getReleaseLock() { return release_lock; }
-
-        int getDescriptorNumber() { return fd; }
-        STATE getState() { return state; }
-        
-        unsigned short getRemotePort();
-        unsigned short getLocalPort();
-        
-        String getRemoteAddress();
-        String getLocalAddress();
-        
-        void setReceiveBufferSize(size_t size);
-        
-        size_t getOutputBufferLength();
-        
-    protected:
-        
-        class ReceiveTask : public Task {
-        public:
-            friend class Socket;
-            
-            ReceiveTask(Socket *socket) : recv_lock("recv_lock") {
-                this->socket = socket;
-                buf_sz = 256;
-                this->recv_buf = new char[buf_sz];
-            }
-            
-            virtual ~ReceiveTask() {
-                delete recv_buf;
-            }
-            
-            void setBufferSize(size_t size) {
-                recv_lock.lock();
-                delete recv_buf;
-                buf_sz = size;
-                recv_buf = new char[size];
-                recv_lock.release();
-            }
-            
-        protected:
-            void run();
-            
-            Socket *socket;
-            TaskMutex recv_lock;
-            char *recv_buf;
-            size_t buf_sz;
-        };
-        
-        class TransmissionTask : public Task {
-        public:
-            friend class Socket;
-            
-            TransmissionTask(Socket *socket) {
-                this->socket = socket;
-            }
-            
-            void runNow() {
-                run();
-            }
-            
-        protected:
-            Mutex send_lock;
-            
-            void run() {
-                send_lock.lock();
-                try {
-                    size_t buf_len = socket->output_buffer.length();
-                    if (buf_len) {
-                        socket->output_buffer.send();
-                        if ( socket->output_buffer.length() && !event_pending(socket->event_write, EV_READ, NULL))
-                            event_add(socket->event_write, NULL);
-                        
-                    }
-                    
-                } catch (...) {
-                    LOG(Log::LOGLEVEL_ERROR, "Error in Socket Transmitter", 0);
-                }
-                if (send_lock.isLockedByMe())
-                    send_lock.release();
-            }
-            
-        private:
-            Socket *socket;
-        };
-        
-        static Mutex *release_lock;
-        
-        STATE state;
-        
-        virtual bool beforeReceived(const char *bytes, const int len) { return true; }
-        virtual int received(const char *bytes, const int len) = 0;
-        virtual void disconnected() {};
-        virtual void onDestroy() {};
-        
-        ReceiveTask         receiver;
-        TransmissionTask    transmission;
-        
-        void setState(STATE state);
-
     private:
-        
-        class SocketDestroy : public Task {
-        public:
-            SocketDestroy(Socket *socket) {
-                this->socket = socket;
-            }
-            
-            virtual ~SocketDestroy() {}
-            
-        protected:
-            void run() {
-                Socket::getReleaseLock()->lock();
-                logger.log(Log::LOGLEVEL_NOTICE, "SocketDestroy: %p %d", socket, socket->getDescriptorNumber());
-                socket->receiver.recv_lock.lock();
-                socket->transmission.send_lock.lock();
-                delete socket;
-                Socket::getReleaseLock()->release();
-                finished();
-            }
-            
-        private:
-            Socket *socket;
-        };
-        
-        static DescriptorInstanceMap<Socket*> *descriptors;
-        static LinkedList<Socket*> *sockets;
-        
-        struct event    *event_read, *event_write;
-        Buffer output_buffer;
-        
-        EventBase *event_base;
-        
-        static Mutex *descriptors_lock;
-        
-        void enableEvents();
-        
-        static void ev_read(int fd, short ev, void *arg);
-        static void ev_write(int fd, short ev, void *arg);
-        
-        static int setNonBlocking(int fd);
-        
-        void init();
+        Socket *socket;
+        Mutex lock;
     };
     
+protected:
+    int fd;
+    EventBase *event_base;
+    struct event *event_read, *event_write;
+    
+    Mutex recv_lock, send_lock;
+    RingBuffer in_buffer, out_buffer;
+    
+    ReceiveTask recv_task;
+    
+    virtual void onReceive() = 0;
+    virtual void onWriteReady() = 0;
+    void receive();
+    void sendReady();
+    
+    void close();
+    
+private:
+    void enableEvents();
+    
+    static void ev_read(int fd, short ev, void *arg);
+    static void ev_write(int fd, short ev, void *arg);
+    
+    typedef struct {
+        time_t timestamp;
+        Socket *socket;
+    } SOCKET_CLOSED;
+    
+    static LinkedList< Ref<SOCKET_CLOSED> > closed_sockets;
+    static void addToClosedSockets(Socket *socket);
+    static void releaseClosedSockets();
 };
 
-#endif /* defined(__PeerConnector__Socket__) */
+#endif /* Socket_hpp */

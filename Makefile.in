@@ -1,5 +1,6 @@
 NAME=libnrsockets
 CC=@CC@
+AR=ar
 DEFS = @DEFS@
 STD_CFLAGS=@ARCH@ -c @DEBUG_FLAGS@ -I$(shell pwd) -I/usr/local/include $(DEFS)
 STD_LDFLAGS=
@@ -15,7 +16,7 @@ STATIC_LIBRARY=$(NAME).a
 all: $(SOURCES) $(STATIC_LIBRARY)
 	
 $(STATIC_LIBRARY): $(OBJECTS)
-	ar rcs $(BUILDPATH)/$@ $(addprefix $(BUILDPATH)/, $(notdir $(OBJECTS)))
+	$(AR) rcs $(BUILDPATH)/$@ $(addprefix $(BUILDPATH)/, $(notdir $(OBJECTS)))
 
 $(BUILDPATH)/%.o: copyconfig
 	+@[ -d $(BUILDPATH) ] || mkdir -p $(BUILDPATH)

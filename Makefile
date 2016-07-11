@@ -1,5 +1,6 @@
 NAME=libnrsockets
 CC=g++
+AR=x86_64-apple-darwin1X-ar
 DEFS = -DHAVE_CONFIG_H
 STD_CFLAGS= -c  -I$(shell pwd) -I/usr/local/include $(DEFS)
 STD_LDFLAGS=
@@ -15,7 +16,7 @@ STATIC_LIBRARY=$(NAME).a
 all: $(SOURCES) $(STATIC_LIBRARY)
 	
 $(STATIC_LIBRARY): $(OBJECTS)
-	ar rcs $(BUILDPATH)/$@ $(addprefix $(BUILDPATH)/, $(notdir $(OBJECTS)))
+	$(AR) rcs $(BUILDPATH)/$@ $(addprefix $(BUILDPATH)/, $(notdir $(OBJECTS)))
 
 $(BUILDPATH)/%.o: copyconfig
 	+@[ -d $(BUILDPATH) ] || mkdir -p $(BUILDPATH)

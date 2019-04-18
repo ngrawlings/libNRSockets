@@ -7,24 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		979DE87B1D32986100F9FA41 /* Address.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 979DE8701D32986100F9FA41 /* Address.cpp */; };
-		979DE87C1D32986100F9FA41 /* Address.h in Headers */ = {isa = PBXBuildFile; fileRef = 979DE8711D32986100F9FA41 /* Address.h */; };
-		979DE87F1D32986100F9FA41 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 979DE8741D32986100F9FA41 /* config.h */; };
-		979DE8801D32986100F9FA41 /* Listener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 979DE8751D32986100F9FA41 /* Listener.cpp */; };
-		979DE8811D32986100F9FA41 /* Listener.h in Headers */ = {isa = PBXBuildFile; fileRef = 979DE8761D32986100F9FA41 /* Listener.h */; };
-		979DE8881D3299E200F9FA41 /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 979DE8861D3299E200F9FA41 /* Socket.cpp */; };
-		979DE8891D3299E200F9FA41 /* Socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 979DE8871D3299E200F9FA41 /* Socket.h */; };
+		97D534BA2268E1DF00671859 /* Socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534B32268E1DF00671859 /* Socket.h */; };
+		97D534BB2268E1DF00671859 /* Listener.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534B42268E1DF00671859 /* Listener.h */; };
+		97D534BC2268E1DF00671859 /* Listener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534B52268E1DF00671859 /* Listener.cpp */; };
+		97D534BD2268E1DF00671859 /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534B62268E1DF00671859 /* Socket.cpp */; };
+		97D534BE2268E1DF00671859 /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534B72268E1DF00671859 /* config.h */; };
+		97D534BF2268E1DF00671859 /* Address.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534B82268E1DF00671859 /* Address.cpp */; };
+		97D534C02268E1DF00671859 /* Address.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534B92268E1DF00671859 /* Address.h */; };
+		97D534C42268E2BC00671859 /* Socks5Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534C22268E2BC00671859 /* Socks5Server.cpp */; };
+		97D534C52268E2BC00671859 /* Socks5Server.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534C32268E2BC00671859 /* Socks5Server.h */; };
+		97D534C82268E2D400671859 /* Scoks5Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534C62268E2D400671859 /* Scoks5Client.cpp */; };
+		97D534C92268E2D400671859 /* Scoks5Client.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534C72268E2D400671859 /* Scoks5Client.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		979DE8701D32986100F9FA41 /* Address.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Address.cpp; path = libnrsockets/Address.cpp; sourceTree = "<group>"; };
-		979DE8711D32986100F9FA41 /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Address.h; path = libnrsockets/Address.h; sourceTree = "<group>"; };
-		979DE8741D32986100F9FA41 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = libnrsockets/config.h; sourceTree = "<group>"; };
-		979DE8751D32986100F9FA41 /* Listener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Listener.cpp; path = libnrsockets/Listener.cpp; sourceTree = "<group>"; };
-		979DE8761D32986100F9FA41 /* Listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Listener.h; path = libnrsockets/Listener.h; sourceTree = "<group>"; };
-		979DE8861D3299E200F9FA41 /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Socket.cpp; path = libnrsockets/Socket.cpp; sourceTree = "<group>"; };
-		979DE8871D3299E200F9FA41 /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Socket.h; path = libnrsockets/Socket.h; sourceTree = "<group>"; };
 		97B4666F1C9AE41D00DD2C30 /* libNrSockets.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNrSockets.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		97D534B32268E1DF00671859 /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
+		97D534B42268E1DF00671859 /* Listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Listener.h; sourceTree = "<group>"; };
+		97D534B52268E1DF00671859 /* Listener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Listener.cpp; sourceTree = "<group>"; };
+		97D534B62268E1DF00671859 /* Socket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Socket.cpp; sourceTree = "<group>"; };
+		97D534B72268E1DF00671859 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = config.h; sourceTree = "<group>"; };
+		97D534B82268E1DF00671859 /* Address.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Address.cpp; sourceTree = "<group>"; };
+		97D534B92268E1DF00671859 /* Address.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Address.h; sourceTree = "<group>"; };
+		97D534C22268E2BC00671859 /* Socks5Server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Socks5Server.cpp; sourceTree = "<group>"; };
+		97D534C32268E2BC00671859 /* Socks5Server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Socks5Server.h; sourceTree = "<group>"; };
+		97D534C62268E2D400671859 /* Scoks5Client.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scoks5Client.cpp; sourceTree = "<group>"; };
+		97D534C72268E2D400671859 /* Scoks5Client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scoks5Client.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,7 +49,7 @@
 		97B466661C9AE41D00DD2C30 = {
 			isa = PBXGroup;
 			children = (
-				97B466761C9AE4B200DD2C30 /* nrsockets */,
+				97D534B22268E16300671859 /* libnrsockets */,
 				97B466701C9AE41D00DD2C30 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,26 +62,30 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		97B466761C9AE4B200DD2C30 /* nrsockets */ = {
+		97D534B22268E16300671859 /* libnrsockets */ = {
 			isa = PBXGroup;
 			children = (
-				97B466931C9AE4DC00DD2C30 /* authentication */,
-				979DE8701D32986100F9FA41 /* Address.cpp */,
-				979DE8711D32986100F9FA41 /* Address.h */,
-				979DE8741D32986100F9FA41 /* config.h */,
-				979DE8751D32986100F9FA41 /* Listener.cpp */,
-				979DE8761D32986100F9FA41 /* Listener.h */,
-				979DE8871D3299E200F9FA41 /* Socket.h */,
-				979DE8861D3299E200F9FA41 /* Socket.cpp */,
+				97D534C12268E1E500671859 /* socks5 */,
+				97D534B82268E1DF00671859 /* Address.cpp */,
+				97D534B92268E1DF00671859 /* Address.h */,
+				97D534B72268E1DF00671859 /* config.h */,
+				97D534B52268E1DF00671859 /* Listener.cpp */,
+				97D534B42268E1DF00671859 /* Listener.h */,
+				97D534B62268E1DF00671859 /* Socket.cpp */,
+				97D534B32268E1DF00671859 /* Socket.h */,
 			);
-			name = nrsockets;
+			path = libnrsockets;
 			sourceTree = "<group>";
 		};
-		97B466931C9AE4DC00DD2C30 /* authentication */ = {
+		97D534C12268E1E500671859 /* socks5 */ = {
 			isa = PBXGroup;
 			children = (
+				97D534C32268E2BC00671859 /* Socks5Server.h */,
+				97D534C22268E2BC00671859 /* Socks5Server.cpp */,
+				97D534C72268E2D400671859 /* Scoks5Client.h */,
+				97D534C62268E2D400671859 /* Scoks5Client.cpp */,
 			);
-			name = authentication;
+			path = socks5;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,10 +95,12 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				979DE8811D32986100F9FA41 /* Listener.h in Headers */,
-				979DE87C1D32986100F9FA41 /* Address.h in Headers */,
-				979DE87F1D32986100F9FA41 /* config.h in Headers */,
-				979DE8891D3299E200F9FA41 /* Socket.h in Headers */,
+				97D534BB2268E1DF00671859 /* Listener.h in Headers */,
+				97D534C52268E2BC00671859 /* Socks5Server.h in Headers */,
+				97D534C02268E1DF00671859 /* Address.h in Headers */,
+				97D534C92268E2D400671859 /* Scoks5Client.h in Headers */,
+				97D534BA2268E1DF00671859 /* Socket.h in Headers */,
+				97D534BE2268E1DF00671859 /* config.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,6 +143,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 97B466661C9AE41D00DD2C30;
@@ -146,9 +161,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				979DE8881D3299E200F9FA41 /* Socket.cpp in Sources */,
-				979DE87B1D32986100F9FA41 /* Address.cpp in Sources */,
-				979DE8801D32986100F9FA41 /* Listener.cpp in Sources */,
+				97D534C42268E2BC00671859 /* Socks5Server.cpp in Sources */,
+				97D534C82268E2D400671859 /* Scoks5Client.cpp in Sources */,
+				97D534BD2268E1DF00671859 /* Socket.cpp in Sources */,
+				97D534BF2268E1DF00671859 /* Address.cpp in Sources */,
+				97D534BC2268E1DF00671859 /* Listener.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

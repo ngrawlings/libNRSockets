@@ -1,6 +1,6 @@
 NAME=libnrsockets
 CC=g++
-AR=x86_64-apple-darwin1X-ar
+AR=ar
 DEFS = -DHAVE_CONFIG_H
 STD_CFLAGS= -c  -I$(shell pwd) -I/usr/local/include $(DEFS)
 STD_LDFLAGS=

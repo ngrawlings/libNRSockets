@@ -10,6 +10,7 @@
 #define Socket_hpp
 
 #include <libnrevent/EventBase.h>
+#include "Address.h"
 #include <libnrthreads/Mutex.h>
 
 #include <libnrcore/memory/RingBuffer.h>
@@ -23,6 +24,7 @@ public:
     friend class ReceiveTask;
     
     Socket(EventBase *event_base, int _fd);
+    Socket(EventBase *event_base, Address address, unsigned short port);
     virtual ~Socket();
     
     size_t available();

@@ -6,4 +6,24 @@
 //  Copyright © 2019 Liquidsoft Studio. All rights reserved.
 //
 
-#include "Scoks5Client.hpp"
+#include "Scoks5Client.h"
+
+namespace nrcore {
+    
+    Socks5Client::Socks5Client(EventBase *event_base, int _fd) : Socket(event_base, _fd) {
+        
+    }
+    
+    Socks5Client::~Socks5Client() {
+        
+    }
+    
+    void Socks5Client::onReceive() {
+        Memory data = this->read(4096);
+    }
+    
+    void Socks5Client::onWriteReady() {
+        
+    }
+    
+}

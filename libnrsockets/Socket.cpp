@@ -25,6 +25,17 @@ Socket::Socket(EventBase *event_base, int _fd) : in_buffer(4096), out_buffer(409
     setsockopt(_fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flag, sizeof(int));
 }
 
+Socket::Socket(EventBase *event_base, Address address, unsigned short port) : in_buffer(4096), out_buffer(4096), recv_task(this) {
+    this->event_base = event_base;
+    
+    //TODO: Connect to address and port here, then set the file descriptor (fd)
+    
+    releaseClosedSockets();
+    
+    int flag = 1;
+    setsockopt(0, IPPROTO_TCP, TCP_NODELAY, (char *) &flag, sizeof(int));
+}
+
 Socket::~Socket() {
     send_lock.lock();
     recv_lock.lock();

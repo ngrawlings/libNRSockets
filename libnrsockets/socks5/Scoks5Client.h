@@ -11,4 +11,23 @@
 
 #include <stdio.h>
 
+#include <libnrsockets/Listener.h>
+#include <libnrsockets/Socket.h>
+
+namespace nrcore {
+
+    class Socks5Client : public Socket {
+    public:
+        Socks5Client(EventBase *event_base, int _fd);
+        virtual ~Socks5Client();
+        
+        void onReceive();
+        void onWriteReady();
+        
+    private:
+        
+    };
+
+}
+
 #endif /* Scoks5Client_hpp */

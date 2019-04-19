@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		979F35BA226A4B9A001F093B /* ClientSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 979F35B8226A4B9A001F093B /* ClientSocket.cpp */; };
+		979F35BB226A4B9A001F093B /* ClientSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = 979F35B9226A4B9A001F093B /* ClientSocket.h */; };
 		97D534BA2268E1DF00671859 /* Socket.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534B32268E1DF00671859 /* Socket.h */; };
 		97D534BB2268E1DF00671859 /* Listener.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534B42268E1DF00671859 /* Listener.h */; };
 		97D534BC2268E1DF00671859 /* Listener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534B52268E1DF00671859 /* Listener.cpp */; };
@@ -21,6 +23,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		979F35B8226A4B9A001F093B /* ClientSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClientSocket.cpp; sourceTree = "<group>"; };
+		979F35B9226A4B9A001F093B /* ClientSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientSocket.h; sourceTree = "<group>"; };
 		97B4666F1C9AE41D00DD2C30 /* libNrSockets.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNrSockets.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		97D534B32268E1DF00671859 /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
 		97D534B42268E1DF00671859 /* Listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Listener.h; sourceTree = "<group>"; };
@@ -33,6 +37,7 @@
 		97D534C32268E2BC00671859 /* Socks5Server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Socks5Server.h; sourceTree = "<group>"; };
 		97D534C62268E2D400671859 /* Scoks5Client.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scoks5Client.cpp; sourceTree = "<group>"; };
 		97D534C72268E2D400671859 /* Scoks5Client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scoks5Client.h; sourceTree = "<group>"; };
+		97D534CA2269805500671859 /* Structures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Structures.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,10 +85,13 @@
 		97D534C12268E1E500671859 /* socks5 */ = {
 			isa = PBXGroup;
 			children = (
+				97D534CA2269805500671859 /* Structures.h */,
 				97D534C32268E2BC00671859 /* Socks5Server.h */,
 				97D534C22268E2BC00671859 /* Socks5Server.cpp */,
 				97D534C72268E2D400671859 /* Scoks5Client.h */,
 				97D534C62268E2D400671859 /* Scoks5Client.cpp */,
+				979F35B9226A4B9A001F093B /* ClientSocket.h */,
+				979F35B8226A4B9A001F093B /* ClientSocket.cpp */,
 			);
 			path = socks5;
 			sourceTree = "<group>";
@@ -97,6 +105,7 @@
 			files = (
 				97D534BB2268E1DF00671859 /* Listener.h in Headers */,
 				97D534C52268E2BC00671859 /* Socks5Server.h in Headers */,
+				979F35BB226A4B9A001F093B /* ClientSocket.h in Headers */,
 				97D534C02268E1DF00671859 /* Address.h in Headers */,
 				97D534C92268E2D400671859 /* Scoks5Client.h in Headers */,
 				97D534BA2268E1DF00671859 /* Socket.h in Headers */,
@@ -166,6 +175,7 @@
 				97D534BD2268E1DF00671859 /* Socket.cpp in Sources */,
 				97D534BF2268E1DF00671859 /* Address.cpp in Sources */,
 				97D534BC2268E1DF00671859 /* Listener.cpp in Sources */,
+				979F35BA226A4B9A001F093B /* ClientSocket.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,6 +219,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -247,6 +258,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/\"";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;

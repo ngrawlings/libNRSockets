@@ -12,6 +12,8 @@
 #include <stdio.h>
 #include <netinet/tcp.h>
 
+#include <libnrcore/exception/Exception.h>
+
 LinkedList< Ref<Socket::SOCKET_CLOSED> > Socket::closed_sockets;
 
 Socket::Socket(EventBase *event_base, int _fd) : in_buffer(4096), out_buffer(4096), recv_task(this) {
@@ -29,6 +31,19 @@ Socket::Socket(EventBase *event_base, Address address, unsigned short port) : in
     this->event_base = event_base;
     
     //TODO: Connect to address and port here, then set the file descriptor (fd)
+    int type = address.getType() == Address::IPV4 ? AF_INET : AF_INET6;
+    this->fd = socket(type, SOCK_STREAM, 0);
+    if (this->fd == -1)
+        throw Exception(-1, "Failed to create socket");
+    
+    struct sockaddr_in ipa;
+    ipa.sin_family = type;
+    ipa.sin_port = htons(port);
+    memcpy(&ipa.sin_addr.s_addr, address.getAddr(), type == AF_INET ? AF_INET : AF_INET6);
+    
+    int res = connect(this->fd, (const struct sockaddr *)&ipa, sizeof(sockaddr_in));
+    if (res == -1)
+        throw Exception(errno, "Faield to connect");
     
     releaseClosedSockets();
     
@@ -134,9 +149,6 @@ void Socket::receive() {
             } else {
                 fs -= in_buffer.append(buf, s);
             }
-            
-            
-
         }
         
         recv_task.run();

@@ -54,13 +54,22 @@ namespace nrcore {
             Mutex lock;
         };
         
-        class CleanUpTask : public Timer {
+        class CleanUpTimer : public Timer {
         public:
-            CleanUpTask(EventBase *event_base);
-            virtual ~CleanUpTask();
+            CleanUpTimer(EventBase *event_base);
+            virtual ~CleanUpTimer();
             
         protected:
             void onTick();
+        };
+        
+        class CleanUpTask : public Task {
+        public:
+            CleanUpTask();
+            virtual ~CleanUpTask();
+            
+        protected:
+            void run();
         };
         
     protected:
@@ -95,7 +104,7 @@ namespace nrcore {
         static void addToClosedSockets(Socket *socket);
         static void releaseClosedSockets();
         
-        static Ref<CleanUpTask> cleanup_task;
+        static Ref<CleanUpTimer> cleanup_timer;
     };
     
 }

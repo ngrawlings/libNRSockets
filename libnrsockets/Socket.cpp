@@ -14,8 +14,10 @@
 
 namespace nrcore {
 
+    EventBase* Socket::event_base;
+    
     LinkedList< Ref<Socket::SOCKET_CLOSED> > Socket::closed_sockets;
-    Ref<Socket::CleanUpTask> Socket::cleanup_task;
+    Ref<Socket::CleanUpTimer> Socket::cleanup_timer;
 
     Socket::Socket(int _fd) : in_buffer(4096), out_buffer(4096), recv_task(this) {
         this->fd = _fd;
@@ -84,10 +86,17 @@ namespace nrcore {
 
     void Socket::init(EventBase *event_base) {
         Socket::event_base = event_base;
+        cleanup_timer = Ref<CleanUpTimer>(new CleanUpTimer(event_base));
     }
 
     void Socket::cleanup() {
-        releaseClosedSockets();
+        cleanup_timer.getPtr()->stop();
+        
+        if (Thread::getThreadInstance() == event_base->getThread()) {
+            releaseClosedSockets();
+        } else {
+            event_base->getThread()->queueTaskToCurrentThread(new CleanUpTask());
+        }
     }
 
     Socket::ReceiveTask::ReceiveTask(Socket *socket) : Task(false) {
@@ -116,15 +125,27 @@ namespace nrcore {
         return lock.isLocked();
     }
     
-    Socket::CleanUpTask::CleanUpTask(EventBase *event_base) : Timer(event_base) {
+    Socket::CleanUpTimer::CleanUpTimer(EventBase *event_base) : Timer(event_base) {
         start(15, 0);
+    }
+    
+    Socket::CleanUpTimer::~CleanUpTimer() {
+        
+    }
+    
+    void Socket::CleanUpTimer::onTick() {
+        releaseClosedSockets();
+    }
+    
+    Socket::CleanUpTask::CleanUpTask() : Task(true) {
+        
     }
     
     Socket::CleanUpTask::~CleanUpTask() {
         
     }
     
-    void Socket::CleanUpTask::onTick() {
+    void Socket::CleanUpTask::run() {
         releaseClosedSockets();
     }
 
@@ -157,16 +178,6 @@ namespace nrcore {
             }
             
             recv_task.run();
-            
-            /*if (!Task::taskExists(&recv_task)) {
-                Thread::runTask(&recv_task);
-            } else if (!recv_task.isFinished() && !recv_task.getAquiredThread()) {
-                Thread *thread = Thread::getWaitingThread();
-                if (thread) {
-                    thread->wake();
-                }
-            }*/
-            
             recv_lock.release();
         }
     }

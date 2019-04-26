@@ -12,7 +12,7 @@
 
 namespace nrcore {
     
-    Socks5Server::Socks5Server(EventBase *event_base, int _fd) : Socket(event_base, _fd) {
+    Socks5Server::Socks5Server(int _fd) : Socket(_fd) {
         state = INIT;
         port = 0;
     }
@@ -186,7 +186,7 @@ namespace nrcore {
             
             if (request.getPtr()->cmd == CONNECT) {
                 try {
-                    client = Ref<ClientSocket>(new ClientSocket(event_base, address, port));
+                    client = Ref<ClientSocket>(new ClientSocket(address, port));
                     
                     SERVER_RESPONSE reply;
                     

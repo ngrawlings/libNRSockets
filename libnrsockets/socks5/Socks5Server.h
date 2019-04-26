@@ -33,7 +33,7 @@ namespace nrcore {
         } STATE;
         
     public:
-        Socks5Server(EventBase *event_base, int _fd);
+        Socks5Server(int _fd);
         virtual ~Socks5Server();
         
         void setPreferedAuthOrder(Memory auth_sequence);

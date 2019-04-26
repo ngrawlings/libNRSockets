@@ -15,22 +15,17 @@
 namespace nrcore {
 
     LinkedList< Ref<Socket::SOCKET_CLOSED> > Socket::closed_sockets;
+    Ref<Socket::CleanUpTask> Socket::cleanup_task;
 
-    Socket::Socket(EventBase *event_base, int _fd) : in_buffer(4096), out_buffer(4096), recv_task(this) {
-        this->event_base = event_base;
+    Socket::Socket(int _fd) : in_buffer(4096), out_buffer(4096), recv_task(this) {
         this->fd = _fd;
         enableEvents();
-        
-        releaseClosedSockets();
         
         int flag = 1;
         setsockopt(_fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flag, sizeof(int));
     }
 
-    Socket::Socket(EventBase *event_base, Address address, unsigned short port) : in_buffer(4096), out_buffer(4096), recv_task(this) {
-        this->event_base = event_base;
-        
-        //TODO: Connect to address and port here, then set the file descriptor (fd)
+    Socket::Socket(Address address, unsigned short port) : in_buffer(4096), out_buffer(4096), recv_task(this) {
         int type = address.getType() == Address::IPV4 ? AF_INET : AF_INET6;
         this->fd = socket(type, SOCK_STREAM, 0);
         if (this->fd == -1)
@@ -44,8 +39,6 @@ namespace nrcore {
         int res = connect(this->fd, (const struct sockaddr *)&ipa, sizeof(sockaddr_in));
         if (res == -1)
             throw Exception(errno, "Faield to connect");
-        
-        releaseClosedSockets();
         
         int flag = 1;
         setsockopt(0, IPPROTO_TCP, TCP_NODELAY, (char *) &flag, sizeof(int));
@@ -89,8 +82,8 @@ namespace nrcore {
         return (int)add;
     }
 
-    void Socket::init() {
-        
+    void Socket::init(EventBase *event_base) {
+        Socket::event_base = event_base;
     }
 
     void Socket::cleanup() {
@@ -121,6 +114,18 @@ namespace nrcore {
 
     bool Socket::ReceiveTask::isLocked() {
         return lock.isLocked();
+    }
+    
+    Socket::CleanUpTask::CleanUpTask(EventBase *event_base) : Timer(event_base) {
+        start(15, 0);
+    }
+    
+    Socket::CleanUpTask::~CleanUpTask() {
+        
+    }
+    
+    void Socket::CleanUpTask::onTick() {
+        releaseClosedSockets();
     }
 
     void Socket::enableEvents() {
@@ -235,16 +240,19 @@ namespace nrcore {
     }
 
     void Socket::releaseClosedSockets() {
-        LinkedListState< Ref<SOCKET_CLOSED> > css(&closed_sockets);
-        Ref<SOCKET_CLOSED> entry;
-        int cnt = css.length();
-        while (cnt--) {
-            entry = css.next();
-            if (entry.getPtr()->timestamp < time(0)-4) {
-                delete entry.getPtr()->socket;
-                css.remove();
+        if (Thread::getThreadInstance() == event_base->getThread()) {
+            LinkedListState< Ref<SOCKET_CLOSED> > css(&closed_sockets);
+            Ref<SOCKET_CLOSED> entry;
+            int cnt = css.length();
+            while (cnt--) {
+                entry = css.next();
+                if (entry.getPtr()->timestamp < time(0)-4) {
+                    delete entry.getPtr()->socket;
+                    css.remove();
+                }
             }
-        }
+        } else
+            throw Exception(-1, "Can only be called on the event base thread");
     }
     
 }

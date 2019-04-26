@@ -18,7 +18,7 @@ namespace nrcore {
 
     class Socks5Client : public Socket {
     public:
-        Socks5Client(EventBase *event_base, int _fd);
+        Socks5Client(int _fd);
         virtual ~Socks5Client();
         
         void onReceive();

@@ -10,7 +10,7 @@
 
 namespace nrcore {
     
-    ClientSocket::ClientSocket(EventBase *event_base, Address address, unsigned short port) : Socket(event_base, address, port) {
+    ClientSocket::ClientSocket(Address address, unsigned short port) : Socket(address, port) {
         
     }
     

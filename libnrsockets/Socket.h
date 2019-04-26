@@ -10,6 +10,8 @@
 #define Socket_hpp
 
 #include <libnrevent/EventBase.h>
+#include <libnrevent/Timer.h>
+
 #include "Address.h"
 #include <libnrthreads/Mutex.h>
 
@@ -24,15 +26,15 @@ namespace nrcore {
     public:
         friend class ReceiveTask;
         
-        Socket(EventBase *event_base, int _fd);
-        Socket(EventBase *event_base, Address address, unsigned short port);
+        Socket(int _fd);
+        Socket(Address address, unsigned short port);
         virtual ~Socket();
         
         size_t available();
         Memory read(int max);
         int send(const char* buffer, size_t len);
         
-        static void init();
+        static void init(EventBase *event_base);
         static void cleanup();
         
     protected:
@@ -52,9 +54,18 @@ namespace nrcore {
             Mutex lock;
         };
         
+        class CleanUpTask : public Timer {
+        public:
+            CleanUpTask(EventBase *event_base);
+            virtual ~CleanUpTask();
+            
+        protected:
+            void onTick();
+        };
+        
     protected:
         int fd;
-        EventBase *event_base;
+        static EventBase *event_base;
         struct event *event_read, *event_write;
         
         Mutex recv_lock, send_lock;
@@ -83,6 +94,8 @@ namespace nrcore {
         static LinkedList< Ref<SOCKET_CLOSED> > closed_sockets;
         static void addToClosedSockets(Socket *socket);
         static void releaseClosedSockets();
+        
+        static Ref<CleanUpTask> cleanup_task;
     };
     
 }

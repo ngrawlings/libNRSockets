@@ -10,7 +10,7 @@
 
 namespace nrcore {
     
-    Socks5Client::Socks5Client(EventBase *event_base, int _fd) : Socket(event_base, _fd) {
+    Socks5Client::Socks5Client(int _fd) : Socket(_fd) {
         
     }
     

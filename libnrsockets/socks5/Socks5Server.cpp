@@ -37,19 +37,7 @@ namespace nrcore {
                 break;
                     
             case AUTH:
-                switch (selected_auth_method) {
-                    case NO_AUTH:
-                        authGSSAPI();
-                        break;
-                        
-                    case GSSAPI:
-                        authUsernamePassword();
-                        break;
-                        
-                    case USERNAME_PASSWORD:
-                        customAuthMethod();
-                        break;
-                }
+                auth(available);
                 break;
                     
             case REQUEST:
@@ -58,6 +46,10 @@ namespace nrcore {
                 
             case PROXY:
                 proxy(available);
+                break;
+                
+            default:
+                this->close();
                 break;
         }
     }
@@ -95,6 +87,37 @@ namespace nrcore {
         reply.version = 0xFF;
         
         this->send((const char*)&reply, sizeof(SERVER_AUTH_SELECT));
+    }
+    
+    void Socks5Server::auth(size_t available) {
+        bool result = false;
+        switch (selected_auth_method) {
+            case NO_AUTH:
+                result = authGSSAPI();
+                break;
+                
+            case GSSAPI:
+                result = authUsernamePassword("", "");
+                break;
+                
+            case USERNAME_PASSWORD:
+                result = customAuthMethod();
+                break;
+        }
+        
+        AUTH_RESULT reply;
+        reply.version = 0x05;
+        
+        if (result) {
+            state = PROXY;
+            reply.result = 0;
+        } else {
+            state = ERROR;
+            reply.result = 1;
+        }
+        
+        this->send((const char*)&reply, sizeof(AUTH_RESULT));
+        this->close();
     }
     
     void Socks5Server::processRequest(size_t available) {
@@ -142,7 +165,26 @@ namespace nrcore {
         
         if (address.getPtr() && port) {
             // Launch Connection
-            client = Ref<ClientSocket>(new ClientSocket(event_base, 0)); // TODO: descriptor must be valid
+            
+            if (request.getPtr()->cmd == CONNECT) {
+                try {
+                    client = Ref<ClientSocket>(new ClientSocket(event_base, address, port));
+                    
+                    SERVER_RESPONSE reply;
+                    
+                    reply.version = 0x5;
+                    
+                    this->send((const char*)&reply, sizeof(SERVER_RESPONSE));
+                    
+                } catch (Exception e) {
+                    return;
+                }
+            } else if (request.getPtr()->cmd == BIND) {
+                
+            } else if (request.getPtr()->cmd == UDP_ASSOCIATE) {
+                
+            }
+            
             state = PROXY;
         }
     }

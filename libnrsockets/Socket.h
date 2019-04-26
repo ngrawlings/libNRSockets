@@ -16,6 +16,7 @@
 #include <libnrcore/memory/RingBuffer.h>
 
 #include <errno.h>
+#include <libnrcore/exception/Exception.h>
 
 using namespace nrcore;
 

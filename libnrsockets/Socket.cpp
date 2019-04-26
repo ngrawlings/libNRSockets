@@ -12,8 +12,6 @@
 #include <stdio.h>
 #include <netinet/tcp.h>
 
-#include <libnrcore/exception/Exception.h>
-
 LinkedList< Ref<Socket::SOCKET_CLOSED> > Socket::closed_sockets;
 
 Socket::Socket(EventBase *event_base, int _fd) : in_buffer(4096), out_buffer(4096), recv_task(this) {

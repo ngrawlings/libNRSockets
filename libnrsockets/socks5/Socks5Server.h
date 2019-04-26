@@ -25,7 +25,8 @@ namespace nrcore {
             INIT,
             AUTH,
             REQUEST,
-            PROXY
+            PROXY,
+            ERROR
         } STATE;
         
     public:
@@ -49,16 +50,17 @@ namespace nrcore {
         unsigned short port;
         Ref<ClientSocket> client;
         
-        
         void selectAuthMethod(CLIENT_INIT *client_init);
         
-        void authGSSAPI() {};
-        void authUsernamePassword() {};
         
-        virtual void customAuthMethod() {};
-        
+        void auth(size_t available);
         void processRequest(size_t available);
         void proxy(size_t available);
+        
+        
+        bool authGSSAPI() { return false; };
+        bool authUsernamePassword(String username, String password) { return false; };
+        virtual bool customAuthMethod() { return false; };
     };
     
 }

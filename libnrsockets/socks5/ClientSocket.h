@@ -17,7 +17,7 @@ namespace nrcore {
 
     class ClientSocket : public Socket {
     public:
-        ClientSocket(EventBase *event_base, int _fd);
+        ClientSocket(EventBase *event_base, Address address, unsigned short port);
         virtual ~ClientSocket();
         
     protected:

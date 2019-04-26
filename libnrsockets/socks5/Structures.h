@@ -13,7 +13,13 @@ typedef enum {
     NO_AUTH             = 0,
     GSSAPI              = 1,
     USERNAME_PASSWORD   = 2
-} AUTH_METHODS;
+} AUTH_METHOD;
+
+typedef enum {
+    CONNECT         = 1,
+    BIND            = 2,
+    UDP_ASSOCIATE   = 3
+} REQUEST_COMMAND;
 
 typedef struct {
     unsigned char version;
@@ -43,6 +49,11 @@ typedef enum {
     CMD_NOT_SUPPORTED       = 7,
     ADDRESS_NOT_SUPPORTED   = 8
 } RESULT;
+
+typedef struct {
+    unsigned char version;
+    unsigned char result;
+} AUTH_RESULT;
 
 typedef struct {
     unsigned char version;

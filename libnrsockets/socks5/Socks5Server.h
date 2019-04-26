@@ -11,10 +11,13 @@
 
 #include <stdio.h>
 
+#include <libnrcore/memory/ByteArray.h>
+#include <libnrcore/memory/RingBuffer.h>
 #include <libnrsockets/Socket.h>
 
 #include "Structures.h"
 #include <libnrsockets/Address.h>
+#include <libnrsockets/utils/BlockLoaderBase.h>
 #include "ClientSocket.h"
 
 namespace nrcore {
@@ -50,17 +53,18 @@ namespace nrcore {
         unsigned short port;
         Ref<ClientSocket> client;
         
-        void selectAuthMethod(CLIENT_INIT *client_init);
+        Ref<BlockLoaderBase> block_loader;
+        Ref<RingBuffer> proxy_downstream_buffer, proxy_upstream_buffer;
         
+        void selectAuthMethod(CLIENT_INIT *client_init);
         
         void auth(size_t available);
         void processRequest(size_t available);
         void proxy(size_t available);
         
-        
         bool authGSSAPI() { return false; };
         bool authUsernamePassword(String username, String password) { return false; };
-        virtual bool customAuthMethod() { return false; };
+        virtual bool customAuthMethod(size_t available) { return false; };
     };
     
 }

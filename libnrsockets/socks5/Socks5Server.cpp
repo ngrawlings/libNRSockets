@@ -8,8 +8,7 @@
 
 #include "Socks5Server.h"
 
-#include <libnrcore/memory/ByteArray.h>
-
+#include <libnrsockets/socks5/BlockLoaders/UsernamePasswordLoader.h>
 
 namespace nrcore {
     
@@ -93,16 +92,32 @@ namespace nrcore {
         bool result = false;
         switch (selected_auth_method) {
             case NO_AUTH:
-                result = authGSSAPI();
-                break;
+                throw Exception(-1, "Code excetion should not be here");
                 
             case GSSAPI:
-                result = authUsernamePassword("", "");
+                {
+                    result = authGSSAPI();
+                }
                 break;
                 
             case USERNAME_PASSWORD:
-                result = customAuthMethod();
+                {
+                    if (!block_loader.getPtr())
+                        block_loader = Ref<BlockLoaderBase>(new UsernamePasswordLoader());
+                    
+                    if (block_loader.getPtr()->appendAvailableData(this)) {
+                        result = authUsernamePassword(
+                                ((UsernamePasswordLoader*)block_loader.getPtr())->getUsername(),
+                                ((UsernamePasswordLoader*)block_loader.getPtr())->getPassword());
+                    }
+                    
+                }
                 break;
+                
+            default:
+                {
+                    result = customAuthMethod(available);
+                }
         }
         
         AUTH_RESULT reply;
@@ -117,7 +132,9 @@ namespace nrcore {
         }
         
         this->send((const char*)&reply, sizeof(AUTH_RESULT));
-        this->close();
+        
+        if (!result)
+            this->close();
     }
     
     void Socks5Server::processRequest(size_t available) {

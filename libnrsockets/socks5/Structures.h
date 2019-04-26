@@ -9,6 +9,8 @@
 #ifndef Structures_h
 #define Structures_h
 
+using namespace nrcore;
+
 typedef enum {
     NO_AUTH             = 0,
     GSSAPI              = 1,
@@ -83,6 +85,13 @@ typedef struct {
     unsigned char ip[16];
     unsigned short port;
 } ADDRESS_IPV6;
+
+typedef struct {
+    unsigned char username_len;
+    ByteArray username;
+    unsigned char password_len;
+    ByteArray password;
+} AUTH_USERNAME_PASSWORD;
 
 
 #endif /* Structures_h */

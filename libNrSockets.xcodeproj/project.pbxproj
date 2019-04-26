@@ -33,7 +33,7 @@
 		97532BA922731086000F55F0 /* UsernamePasswordLoader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UsernamePasswordLoader.h; sourceTree = "<group>"; };
 		979F35B8226A4B9A001F093B /* ClientSocket.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ClientSocket.cpp; sourceTree = "<group>"; };
 		979F35B9226A4B9A001F093B /* ClientSocket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ClientSocket.h; sourceTree = "<group>"; };
-		97B4666F1C9AE41D00DD2C30 /* libNrSockets.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNrSockets.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		97B4666F1C9AE41D00DD2C30 /* libnrsockets.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libnrsockets.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		97D534B32268E1DF00671859 /* Socket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Socket.h; sourceTree = "<group>"; };
 		97D534B42268E1DF00671859 /* Listener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Listener.h; sourceTree = "<group>"; };
 		97D534B52268E1DF00671859 /* Listener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Listener.cpp; sourceTree = "<group>"; };
@@ -88,7 +88,7 @@
 		97B466701C9AE41D00DD2C30 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				97B4666F1C9AE41D00DD2C30 /* libNrSockets.a */,
+				97B4666F1C9AE41D00DD2C30 /* libnrsockets.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -160,7 +160,7 @@
 			);
 			name = NrSockets;
 			productName = NrSockets;
-			productReference = 97B4666F1C9AE41D00DD2C30 /* libNrSockets.a */;
+			productReference = 97B4666F1C9AE41D00DD2C30 /* libnrsockets.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -177,7 +177,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 97B4666A1C9AE41D00DD2C30 /* Build configuration list for PBXProject "LibNrSockets" */;
+			buildConfigurationList = 97B4666A1C9AE41D00DD2C30 /* Build configuration list for PBXProject "libNrSockets" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -339,7 +339,8 @@
 					"\"$(SRCROOT)/../libNrDebug\"",
 					"\"$(SRCROOT)/\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = nrsockets;
+				PRODUCT_NAME = nrsockets;
 			};
 			name = Debug;
 		};
@@ -357,14 +358,15 @@
 					"\"$(SRCROOT)/../libNrDebug\"",
 					"\"$(SRCROOT)/\"",
 				);
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_MODULE_NAME = nrsockets;
+				PRODUCT_NAME = nrsockets;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		97B4666A1C9AE41D00DD2C30 /* Build configuration list for PBXProject "LibNrSockets" */ = {
+		97B4666A1C9AE41D00DD2C30 /* Build configuration list for PBXProject "libNrSockets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				97B466711C9AE41D00DD2C30 /* Debug */,

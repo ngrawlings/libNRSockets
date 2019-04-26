@@ -109,6 +109,7 @@ namespace nrcore {
                         result = authUsernamePassword(
                                 ((UsernamePasswordLoader*)block_loader.getPtr())->getUsername(),
                                 ((UsernamePasswordLoader*)block_loader.getPtr())->getPassword());
+                        block_loader = Ref<BlockLoaderBase>();
                     }
                     
                 }
@@ -124,7 +125,7 @@ namespace nrcore {
         reply.version = 0x05;
         
         if (result) {
-            state = PROXY;
+            state = REQUEST;
             reply.result = 0;
         } else {
             state = ERROR;
@@ -202,6 +203,7 @@ namespace nrcore {
                 
             }
             
+            proxy_buffer = Ref<RingBuffer>(new RingBuffer(4096));
             state = PROXY;
         }
     }

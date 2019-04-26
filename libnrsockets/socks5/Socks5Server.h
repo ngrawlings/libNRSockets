@@ -54,7 +54,7 @@ namespace nrcore {
         Ref<ClientSocket> client;
         
         Ref<BlockLoaderBase> block_loader;
-        Ref<RingBuffer> proxy_downstream_buffer, proxy_upstream_buffer;
+        Ref<RingBuffer> proxy_buffer;
         
         void selectAuthMethod(CLIENT_INIT *client_init);
         

@@ -17,7 +17,7 @@
                BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
                BuildableName = "libNrSockets.a"
                BlueprintName = "NrSockets"
-               ReferencedContainer = "container:LibNrSockets.xcodeproj">
+               ReferencedContainer = "container:libNrSockets.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -57,7 +57,7 @@
             BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
             BuildableName = "libNrSockets.a"
             BlueprintName = "NrSockets"
-            ReferencedContainer = "container:LibNrSockets.xcodeproj">
+            ReferencedContainer = "container:libNrSockets.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>

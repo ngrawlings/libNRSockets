@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		973DEA3622AA2F3400411B1C /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 973DEA3522AA2F3400411B1C /* main.cpp */; };
+		973DEA3C22AA303900411B1C /* libnrcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DEA3B22AA303900411B1C /* libnrcore.a */; };
+		973DEA3E22AA304400411B1C /* libnrdebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DEA3D22AA304400411B1C /* libnrdebug.a */; };
+		973DEA4022AA304F00411B1C /* libnrthreads.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DEA3F22AA304F00411B1C /* libnrthreads.a */; };
+		973DEA4422AA34FD00411B1C /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 973DEA4222AA34FD00411B1C /* Server.cpp */; };
+		973DEA4522AA371D00411B1C /* Listener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534B52268E1DF00671859 /* Listener.cpp */; };
+		973DEA4622AA372000411B1C /* Socket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534B62268E1DF00671859 /* Socket.cpp */; };
+		973DEA4722AA372400411B1C /* Address.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534B82268E1DF00671859 /* Address.cpp */; };
+		973DEA4822AA372900411B1C /* Socks5Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534C22268E2BC00671859 /* Socks5Server.cpp */; };
+		973DEA4A22AA50C600411B1C /* libnrevent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DEA4922AA50C600411B1C /* libnrevent.a */; };
+		973DEA4C22AA511A00411B1C /* libevent.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DEA4B22AA511A00411B1C /* libevent.a */; };
+		973DEA4E22AA513A00411B1C /* libevent_pthreads.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 973DEA4D22AA513A00411B1C /* libevent_pthreads.a */; };
+		973DEA4F22AA517C00411B1C /* ClientSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 979F35B8226A4B9A001F093B /* ClientSocket.cpp */; };
+		973DEA5022AA519300411B1C /* UsernamePasswordLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97532BA822731086000F55F0 /* UsernamePasswordLoader.cpp */; };
+		973DEA5122AA519800411B1C /* BlockLoaderBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97532BA422730E46000F55F0 /* BlockLoaderBase.cpp */; };
 		97532BA622730E46000F55F0 /* BlockLoaderBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97532BA422730E46000F55F0 /* BlockLoaderBase.cpp */; };
 		97532BA722730E46000F55F0 /* BlockLoaderBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 97532BA522730E46000F55F0 /* BlockLoaderBase.h */; };
 		97532BAA22731086000F55F0 /* UsernamePasswordLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97532BA822731086000F55F0 /* UsernamePasswordLoader.cpp */; };
@@ -26,7 +41,29 @@
 		97D534C92268E2D400671859 /* Scoks5Client.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534C72268E2D400671859 /* Scoks5Client.h */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		973DEA3122AA2F3400411B1C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		973DEA3322AA2F3400411B1C /* UnitTests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UnitTests; sourceTree = BUILT_PRODUCTS_DIR; };
+		973DEA3522AA2F3400411B1C /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		973DEA3B22AA303900411B1C /* libnrcore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libnrcore.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		973DEA3D22AA304400411B1C /* libnrdebug.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libnrdebug.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		973DEA3F22AA304F00411B1C /* libnrthreads.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libnrthreads.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		973DEA4222AA34FD00411B1C /* Server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
+		973DEA4322AA34FD00411B1C /* Server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		973DEA4922AA50C600411B1C /* libnrevent.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libnrevent.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		973DEA4B22AA511A00411B1C /* libevent.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libevent.a; path = ../../../../../usr/local/Cellar/libevent/2.1.8/lib/libevent.a; sourceTree = "<group>"; };
+		973DEA4D22AA513A00411B1C /* libevent_pthreads.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libevent_pthreads.a; path = ../../../../../usr/local/Cellar/libevent/2.1.8/lib/libevent_pthreads.a; sourceTree = "<group>"; };
 		97532BA422730E46000F55F0 /* BlockLoaderBase.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BlockLoaderBase.cpp; sourceTree = "<group>"; };
 		97532BA522730E46000F55F0 /* BlockLoaderBase.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlockLoaderBase.h; sourceTree = "<group>"; };
 		97532BA822731086000F55F0 /* UsernamePasswordLoader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = UsernamePasswordLoader.cpp; sourceTree = "<group>"; };
@@ -49,6 +86,19 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		973DEA3022AA2F3400411B1C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				973DEA4E22AA513A00411B1C /* libevent_pthreads.a in Frameworks */,
+				973DEA4C22AA511A00411B1C /* libevent.a in Frameworks */,
+				973DEA4022AA304F00411B1C /* libnrthreads.a in Frameworks */,
+				973DEA4A22AA50C600411B1C /* libnrevent.a in Frameworks */,
+				973DEA3C22AA303900411B1C /* libnrcore.a in Frameworks */,
+				973DEA3E22AA304400411B1C /* libnrdebug.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97B4666C1C9AE41D00DD2C30 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -59,6 +109,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		973DEA3422AA2F3400411B1C /* UnitTests */ = {
+			isa = PBXGroup;
+			children = (
+				973DEA4122AA348D00411B1C /* Sock5ProxyServer */,
+				973DEA3522AA2F3400411B1C /* main.cpp */,
+			);
+			path = UnitTests;
+			sourceTree = "<group>";
+		};
+		973DEA3A22AA303900411B1C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				973DEA4D22AA513A00411B1C /* libevent_pthreads.a */,
+				973DEA4B22AA511A00411B1C /* libevent.a */,
+				973DEA3F22AA304F00411B1C /* libnrthreads.a */,
+				973DEA3B22AA303900411B1C /* libnrcore.a */,
+				973DEA4922AA50C600411B1C /* libnrevent.a */,
+				973DEA3D22AA304400411B1C /* libnrdebug.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		973DEA4122AA348D00411B1C /* Sock5ProxyServer */ = {
+			isa = PBXGroup;
+			children = (
+				973DEA4322AA34FD00411B1C /* Server.h */,
+				973DEA4222AA34FD00411B1C /* Server.cpp */,
+			);
+			path = Sock5ProxyServer;
+			sourceTree = "<group>";
+		};
 		97532BA322730E27000F55F0 /* utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -81,7 +162,9 @@
 			isa = PBXGroup;
 			children = (
 				97D534B22268E16300671859 /* libnrsockets */,
+				973DEA3422AA2F3400411B1C /* UnitTests */,
 				97B466701C9AE41D00DD2C30 /* Products */,
+				973DEA3A22AA303900411B1C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -89,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				97B4666F1C9AE41D00DD2C30 /* libnrsockets.a */,
+				973DEA3322AA2F3400411B1C /* UnitTests */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -146,6 +230,23 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		973DEA3222AA2F3400411B1C /* UnitTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 973DEA3922AA2F3400411B1C /* Build configuration list for PBXNativeTarget "UnitTests" */;
+			buildPhases = (
+				973DEA2F22AA2F3400411B1C /* Sources */,
+				973DEA3022AA2F3400411B1C /* Frameworks */,
+				973DEA3122AA2F3400411B1C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UnitTests;
+			productName = UnitTests;
+			productReference = 973DEA3322AA2F3400411B1C /* UnitTests */;
+			productType = "com.apple.product-type.tool";
+		};
 		97B4666E1C9AE41D00DD2C30 /* NrSockets */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 97B466731C9AE41D00DD2C30 /* Build configuration list for PBXNativeTarget "NrSockets" */;
@@ -172,6 +273,11 @@
 				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = "Liquidsoft Studio";
 				TargetAttributes = {
+					973DEA3222AA2F3400411B1C = {
+						CreatedOnToolsVersion = 10.2.1;
+						DevelopmentTeam = 4MASABRRSM;
+						ProvisioningStyle = Automatic;
+					};
 					97B4666E1C9AE41D00DD2C30 = {
 						CreatedOnToolsVersion = 7.3;
 					};
@@ -191,11 +297,28 @@
 			projectRoot = "";
 			targets = (
 				97B4666E1C9AE41D00DD2C30 /* NrSockets */,
+				973DEA3222AA2F3400411B1C /* UnitTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		973DEA2F22AA2F3400411B1C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				973DEA5122AA519800411B1C /* BlockLoaderBase.cpp in Sources */,
+				973DEA4622AA372000411B1C /* Socket.cpp in Sources */,
+				973DEA3622AA2F3400411B1C /* main.cpp in Sources */,
+				973DEA4722AA372400411B1C /* Address.cpp in Sources */,
+				973DEA4522AA371D00411B1C /* Listener.cpp in Sources */,
+				973DEA4822AA372900411B1C /* Socks5Server.cpp in Sources */,
+				973DEA5022AA519300411B1C /* UsernamePasswordLoader.cpp in Sources */,
+				973DEA4F22AA517C00411B1C /* ClientSocket.cpp in Sources */,
+				973DEA4422AA34FD00411B1C /* Server.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		97B4666B1C9AE41D00DD2C30 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -214,6 +337,51 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		973DEA3722AA2F3400411B1C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4MASABRRSM;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/libevent/2.1.8/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		973DEA3822AA2F3400411B1C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 4MASABRRSM;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/libevent/2.1.8/lib,
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		97B466711C9AE41D00DD2C30 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -264,7 +432,15 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/\"",
+					"\"$(SRCROOT)/../LibNrCore/\"",
+					"\"$(SRCROOT)/../LibNrDebug/\"",
+					"\"$(SRCROOT)/../LibNrEvent/\"",
 					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../LibNrCore/Debug\"",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/libnr-ceoshwjgymdvxxfrzavtxkumodon/Build/Products/Debug\"",
+					/usr/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -317,7 +493,15 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"\"$(SRCROOT)/\"",
+					"\"$(SRCROOT)/../LibNrCore/\"",
+					"\"$(SRCROOT)/../LibNrDebug/\"",
+					"\"$(SRCROOT)/../LibNrEvent/\"",
 					/usr/local/include,
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"\"$(SRCROOT)/../LibNrCore/Debug\"",
+					"\"$(SRCROOT)/../../../Library/Developer/Xcode/DerivedData/libnr-ceoshwjgymdvxxfrzavtxkumodon/Build/Products/Debug\"",
+					/usr/local/lib,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -366,6 +550,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		973DEA3922AA2F3400411B1C /* Build configuration list for PBXNativeTarget "UnitTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				973DEA3722AA2F3400411B1C /* Debug */,
+				973DEA3822AA2F3400411B1C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		97B4666A1C9AE41D00DD2C30 /* Build configuration list for PBXProject "libNrSockets" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

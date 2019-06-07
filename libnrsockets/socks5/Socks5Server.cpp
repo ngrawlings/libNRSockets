@@ -9,6 +9,7 @@
 #include "Socks5Server.h"
 
 #include <libnrsockets/socks5/BlockLoaders/UsernamePasswordLoader.h>
+#include <libnrcore/memory/ByteArray.h>
 
 namespace nrcore {
     
@@ -30,8 +31,12 @@ namespace nrcore {
         switch (state) {
             case INIT:
                 if (available >= sizeof(CLIENT_INIT)) {
-                    Memory data = this->read(sizeof(CLIENT_INIT));
-                    selectAuthMethod((CLIENT_INIT *)data.operator char *());
+                    Memory data = this->read(2);
+                    ByteArray cmd = ByteArray(data.operator char *(), (int)data.length());
+                    data = this->read(data.operator char *()[1]);
+                    cmd.append(data.operator char *(), (int)data.length());
+                    
+                    selectAuthMethod((CLIENT_INIT *)cmd.operator char *());
                 }
                 break;
                     
@@ -145,7 +150,8 @@ namespace nrcore {
                 CLIENT_REQUEST *client_request = new CLIENT_REQUEST;
                 memcpy((unsigned char*)client_request, data.operator char *(), sizeof(CLIENT_REQUEST));
                 request = Ref<CLIENT_REQUEST>(client_request);
-            }
+            } else
+                return;
         }
         
         if (request.getPtr()->address_type == IPV4 && this->available() >= sizeof(ADDRESS_IPV4)) {
@@ -153,23 +159,25 @@ namespace nrcore {
             address_data = this->read(sizeof(ADDRESS_IPV4));
             address = Ref<Address>(new Address(Address::IPV4, (const char*)((ADDRESS_IPV4*)address_data.getPtr())->ip));
             memcpy(&port, &((ADDRESS_IPV4*)address_data.getPtr())->port, 2);
+            port = htons(port);
             
         } else if (request.getPtr()->address_type == IPV6 && this->available() >= sizeof(ADDRESS_IPV4)) {
             
             address_data = this->read(sizeof(ADDRESS_IPV6));
             address = Ref<Address>(new Address(Address::IPV6, (const char*)((ADDRESS_IPV6*)address_data.getPtr())->ip));
             memcpy(&port, &((ADDRESS_IPV6*)address_data.getPtr())->port, 2);
+            port = htons(port);
             
         } else if (request.getPtr()->address_type == DOMAIN) {
             
             if (address_data.length() == 0) {
                 ByteArray ba(this->read(1).getPtr(), 1);
-                Memory data = this->read(ba[0]+2);
+                Memory data = this->read((ba.operator char *()[0])+2);
                 ba.append(ByteArray(data.getPtr(), (int)data.length()));
                 address_data = ba;
             } else if (address_data.length() < address_data[0]+2) {
                 ByteArray ba(address_data.getPtr(), (int)address_data.length());
-                Memory data = this->read((ba[0]+2)-(int)address_data.length());
+                Memory data = this->read(((ba.operator char *()[0])+2)-(int)address_data.length());
                 ba.append(ByteArray(data.getPtr(), (int)data.length()));
                 address_data = ba;
             }
@@ -186,13 +194,20 @@ namespace nrcore {
             
             if (request.getPtr()->cmd == CONNECT) {
                 try {
-                    client = Ref<ClientSocket>(new ClientSocket(address, port));
+                    client = Ref<ClientSocket>(new ClientSocket(this, address, port));
+                    client.getPtr()->setCallbackInterface(this);
                     
                     SERVER_RESPONSE reply;
                     
+                    memset(&reply, 0, sizeof(SERVER_RESPONSE));
                     reply.version = 0x5;
+                    reply.address_type = 0x01;
                     
                     this->send((const char*)&reply, sizeof(SERVER_RESPONSE));
+                    
+                    // TODO: set the actual address
+                    const char *addr = (char[]){0, 0, 0, 0, 0, 0};
+                    this->send(addr, 6);
                     
                 } catch (Exception e) {
                     return;
@@ -209,6 +224,24 @@ namespace nrcore {
     }
     
     void Socks5Server::proxy(size_t available) {
+        size_t sz = client.getPtr()->writeBufferSpace();
+        
+        sz = sz > available ? available : sz;
+        Memory data = this->read((int)sz);
+        
+        client.getPtr()->send(data.operator char *(), data.length());
+    }
+    
+    void Socks5Server::onConnected(Socket *socket) {
+        
+    }
+    
+    void Socks5Server::onClosed(Socket *socket) {
+        client = Ref<ClientSocket>(0);
+        close();
+    }
+    
+    void Socks5Server::onDestroyed(Socket *socket) {
         
     }
     

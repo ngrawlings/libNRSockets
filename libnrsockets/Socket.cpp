@@ -12,43 +12,55 @@
 #include <stdio.h>
 #include <netinet/tcp.h>
 
+#include <libnrthreads/Thread.h>
+
 namespace nrcore {
 
     EventBase* Socket::event_base;
     
-    LinkedList< Ref<Socket::SOCKET_CLOSED> > Socket::closed_sockets;
-    Ref<Socket::CleanUpTimer> Socket::cleanup_timer;
-
-    Socket::Socket(int _fd) : in_buffer(4096), out_buffer(4096), recv_task(this) {
+    Socket::Socket(int _fd) : in_buffer(4096), out_buffer(4096), recv_task(this), cb_interface(0) {
         this->fd = _fd;
         enableEvents();
         
         int flag = 1;
         setsockopt(_fd, IPPROTO_TCP, TCP_NODELAY, (char *) &flag, sizeof(int));
+        
+        if (cb_interface)
+            cb_interface->onConnected(this);
     }
 
-    Socket::Socket(Address address, unsigned short port) : in_buffer(4096), out_buffer(4096), recv_task(this) {
+    Socket::Socket(Address address, unsigned short port) : in_buffer(4096), out_buffer(4096), recv_task(this), cb_interface(0) {
         int type = address.getType() == Address::IPV4 ? AF_INET : AF_INET6;
         this->fd = socket(type, SOCK_STREAM, 0);
         if (this->fd == -1)
             throw Exception(-1, "Failed to create socket");
         
         struct sockaddr_in ipa;
+        memset(&ipa, 0, sizeof(sockaddr_in));
         ipa.sin_family = type;
         ipa.sin_port = htons(port);
-        memcpy(&ipa.sin_addr.s_addr, address.getAddr(), type == AF_INET ? AF_INET : AF_INET6);
+        ipa.sin_len = sizeof(sockaddr_in);
+        memcpy(&ipa.sin_addr.s_addr, address.getAddr(), type == AF_INET ? 4 : 16);
         
         int res = connect(this->fd, (const struct sockaddr *)&ipa, sizeof(sockaddr_in));
         if (res == -1)
             throw Exception(errno, "Faield to connect");
         
+        enableEvents();
+        
         int flag = 1;
         setsockopt(0, IPPROTO_TCP, TCP_NODELAY, (char *) &flag, sizeof(int));
+        
+        if (cb_interface)
+            cb_interface->onConnected(this);
     }
 
     Socket::~Socket() {
-        send_lock.lock();
-        recv_lock.lock();
+        send_lock.lock(0, "d");
+        recv_lock.lock(0, "d");
+        
+        if (cb_interface)
+            cb_interface->onDestroyed(this);
     }
 
     size_t Socket::available() {
@@ -83,20 +95,17 @@ namespace nrcore {
         
         return (int)add;
     }
+    
+    void Socket::setCallbackInterface(CallbackInterface *cb) {
+        this->cb_interface = cb;
+    }
+    
+    size_t Socket::writeBufferSpace() {
+        return out_buffer.freeSpace();
+    }
 
     void Socket::init(EventBase *event_base) {
         Socket::event_base = event_base;
-        cleanup_timer = Ref<CleanUpTimer>(new CleanUpTimer(event_base));
-    }
-
-    void Socket::cleanup() {
-        cleanup_timer.getPtr()->stop();
-        
-        if (Thread::getThreadInstance() == event_base->getThread()) {
-            releaseClosedSockets();
-        } else {
-            event_base->getThread()->queueTaskToCurrentThread(new CleanUpTask());
-        }
     }
 
     Socket::ReceiveTask::ReceiveTask(Socket *socket) : Task(false) {
@@ -109,7 +118,7 @@ namespace nrcore {
 
     void Socket::ReceiveTask::run() {
         lock.lock();
-        socket->recv_lock.lock();
+        socket->recv_lock.lock(0, "run");
         try {
             while (socket->in_buffer.length())
                 socket->onReceive();
@@ -125,30 +134,6 @@ namespace nrcore {
         return lock.isLocked();
     }
     
-    Socket::CleanUpTimer::CleanUpTimer(EventBase *event_base) : Timer(event_base) {
-        start(15, 0);
-    }
-    
-    Socket::CleanUpTimer::~CleanUpTimer() {
-        
-    }
-    
-    void Socket::CleanUpTimer::onTick() {
-        releaseClosedSockets();
-    }
-    
-    Socket::CleanUpTask::CleanUpTask() : Task(true) {
-        
-    }
-    
-    Socket::CleanUpTask::~CleanUpTask() {
-        
-    }
-    
-    void Socket::CleanUpTask::run() {
-        releaseClosedSockets();
-    }
-
     void Socket::enableEvents() {
         event_write = event_new(event_base->getEventBase(), fd, EV_WRITE, ev_write, (void*)this);
         event_read = event_new(event_base->getEventBase(), fd, EV_READ|EV_PERSIST, ev_read, (void*)this);
@@ -159,7 +144,7 @@ namespace nrcore {
     void Socket::receive() {
         size_t fs = in_buffer.freeSpace();
         
-        if (recv_lock.tryLock()) {
+        if (recv_lock.tryLock("receive")) {
             if (fs > 0) {
                 char buf[64];
                 
@@ -177,8 +162,8 @@ namespace nrcore {
                 }
             }
             
-            recv_task.run();
             recv_lock.release();
+            Thread::runTask(&recv_task);
         }
     }
 
@@ -186,17 +171,15 @@ namespace nrcore {
         try {
             if (out_buffer.length()) {
                 send_lock.lock();
-                recv_lock.lock();
+                recv_lock.lock(0, "sendReady");
                 recv_lock.release();
                 if (out_buffer.length()) {
                     int flags = 0;
                     Memory data = out_buffer.getDataUntilEnd();
                     int s = (int)::send(fd, data.operator char *(), (ssize_t)data.length(), flags);
                     if (!s || (s==-1 && errno!=EAGAIN)) {
-                        printf("closing connection\r\n");
                         close();
                     } else if (s) {
-                        printf("sent: %d\r\n", s);
                         out_buffer.drop(s);
                     }
                     
@@ -226,12 +209,14 @@ namespace nrcore {
         if (event_write) {
             event_del(event_write);
             event_free(event_write);
-            addToClosedSockets(this);
             event_write = 0;
         }
         
         if (locked)
             send_lock.release();
+        
+        if (cb_interface)
+            cb_interface->onClosed(this);
     }
 
     void Socket::ev_read(int fd, short ev, void *arg) {
@@ -240,30 +225,6 @@ namespace nrcore {
 
     void Socket::ev_write(int fd, short ev, void *arg) {
         ((Socket*)arg)->sendReady();
-    }
-
-    void Socket::addToClosedSockets(Socket *socket) {
-        SOCKET_CLOSED *cs = new SOCKET_CLOSED;
-        cs->timestamp = time(0);
-        cs->socket = socket;
-        
-        closed_sockets.add(Ref<SOCKET_CLOSED>(cs));
-    }
-
-    void Socket::releaseClosedSockets() {
-        if (Thread::getThreadInstance() == event_base->getThread()) {
-            LinkedListState< Ref<SOCKET_CLOSED> > css(&closed_sockets);
-            Ref<SOCKET_CLOSED> entry;
-            int cnt = css.length();
-            while (cnt--) {
-                entry = css.next();
-                if (entry.getPtr()->timestamp < time(0)-4) {
-                    delete entry.getPtr()->socket;
-                    css.remove();
-                }
-            }
-        } else
-            throw Exception(-1, "Can only be called on the event base thread");
     }
     
 }

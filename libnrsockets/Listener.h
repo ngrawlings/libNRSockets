@@ -57,6 +57,8 @@ namespace nrcore {
         void runEventLoop(bool create_task=false);
         void breakEventLoop();
         
+        EventBase* getEventBase();
+        
     protected:
         
         virtual void onNewConnection(EventBase *event_base, int fd, unsigned char *addr, int addr_sz) = 0;

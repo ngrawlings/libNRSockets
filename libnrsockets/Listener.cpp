@@ -137,6 +137,10 @@ namespace nrcore {
     void Listener::breakEventLoop() {
         event_base_loopbreak(event_base->getEventBase());
     }
+    
+    EventBase* Listener::getEventBase() {
+        return event_base;
+    }
 
     int Listener::setNonBlocking(int fd) {
         int flags;

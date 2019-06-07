@@ -26,13 +26,27 @@ namespace nrcore {
     public:
         friend class ReceiveTask;
         
+        class CallbackInterface {
+        public:
+            friend class Socket;
+            
+        protected:
+            virtual void onConnected(Socket *socket) {};
+            virtual void onClosed(Socket *socket) {};
+            virtual void onDestroyed(Socket *socket) {};
+        };
+        
         Socket(int _fd);
         Socket(Address address, unsigned short port);
         virtual ~Socket();
         
         size_t available();
         Memory read(int max);
+        
+        size_t writeBufferSpace();
         int send(const char* buffer, size_t len);
+        
+        void setCallbackInterface(CallbackInterface *cb);
         
         static void init(EventBase *event_base);
         static void cleanup();
@@ -52,24 +66,6 @@ namespace nrcore {
         private:
             Socket *socket;
             Mutex lock;
-        };
-        
-        class CleanUpTimer : public Timer {
-        public:
-            CleanUpTimer(EventBase *event_base);
-            virtual ~CleanUpTimer();
-            
-        protected:
-            void onTick();
-        };
-        
-        class CleanUpTask : public Task {
-        public:
-            CleanUpTask();
-            virtual ~CleanUpTask();
-            
-        protected:
-            void run();
         };
         
     protected:
@@ -95,16 +91,7 @@ namespace nrcore {
         static void ev_read(int fd, short ev, void *arg);
         static void ev_write(int fd, short ev, void *arg);
         
-        typedef struct {
-            time_t timestamp;
-            Socket *socket;
-        } SOCKET_CLOSED;
-        
-        static LinkedList< Ref<SOCKET_CLOSED> > closed_sockets;
-        static void addToClosedSockets(Socket *socket);
-        static void releaseClosedSockets();
-        
-        static Ref<CleanUpTimer> cleanup_timer;
+        CallbackInterface *cb_interface;
     };
     
 }

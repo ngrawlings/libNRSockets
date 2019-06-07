@@ -14,16 +14,21 @@
 #include <libnrsockets/Socket.h>
 
 namespace nrcore {
+    
+    class Socks5Server;
 
     class ClientSocket : public Socket {
     public:
-        ClientSocket(Address address, unsigned short port);
+        ClientSocket(Socks5Server *server, Address address, unsigned short port);
         virtual ~ClientSocket();
         
     protected:
         
         void onReceive();
         void onWriteReady();
+        
+    private:
+        Socks5Server *server;
         
     };
     

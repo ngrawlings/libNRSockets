@@ -22,7 +22,7 @@
 
 namespace nrcore {
 
-    class Socks5Server : public Socket {
+    class Socks5Server : public Socket, Socket::CallbackInterface {
     public:
         typedef enum {
             INIT,
@@ -42,6 +42,12 @@ namespace nrcore {
         
         void onReceive();
         void onWriteReady();
+        
+        virtual bool customAuthMethod(size_t available) { return false; };
+        
+        void onConnected(Socket *socket);
+        void onClosed(Socket *socket);
+        void onDestroyed(Socket *socket);
         
     private:
         STATE state;
@@ -64,7 +70,6 @@ namespace nrcore {
         
         bool authGSSAPI() { return false; };
         bool authUsernamePassword(String username, String password) { return false; };
-        virtual bool customAuthMethod(size_t available) { return false; };
     };
     
 }

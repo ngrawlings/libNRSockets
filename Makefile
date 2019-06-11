@@ -1,8 +1,8 @@
 NAME=libnrsockets
-CC=g++
+CC=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 AR=ar
 DEFS = -DHAVE_CONFIG_H
-STD_CFLAGS= -c  -I$(shell pwd) -I/usr/local/include $(DEFS)
+STD_CFLAGS= -c  -I$(shell pwd) -I/usr/local/include -stdlib=libc++ -arch arm64 -fembed-bitcode-marker --sysroot=/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk $(DEFS)
 STD_LDFLAGS=
 SOURCES=$(shell for file in `find ./$(NAME) \( -name x_*  \) -prune -o -type f -name '*.cpp' -print`;do echo $$file; done)
 HEADERS=$(shell for file in `find ./$(NAME) \( -name x_*  \) -prune -o -type f -name '*.h' -print`;do echo $$file; done)

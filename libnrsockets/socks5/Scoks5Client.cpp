@@ -20,10 +20,11 @@ namespace nrcore {
     
     void Socks5Client::onReceive() {
         Memory data = this->read(4096);
+        
     }
     
     void Socks5Client::onWriteReady() {
-        
+
     }
     
 }

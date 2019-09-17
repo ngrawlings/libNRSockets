@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 
+#include <libnrcore/memory/ByteArray.h>
 #include <libnrsockets/Socket.h>
 
 namespace nrcore {
@@ -29,7 +30,7 @@ namespace nrcore {
         
     private:
         Socks5Server *server;
-        
+        ByteArray buffer;
     };
     
 }

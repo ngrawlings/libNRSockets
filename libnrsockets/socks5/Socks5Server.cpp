@@ -59,7 +59,11 @@ namespace nrcore {
     }
     
     void Socks5Server::onWriteReady() {
-        
+        if (buffer.length()) {
+            int sent = client.getPtr()->send(buffer.operator char *(), buffer.length());
+            if (sent)
+                buffer = buffer.subBytes(sent);
+        }
     }
     
     void Socks5Server::selectAuthMethod(CLIENT_INIT *client_init) {
@@ -224,12 +228,23 @@ namespace nrcore {
     }
     
     void Socks5Server::proxy(size_t available) {
-        size_t sz = client.getPtr()->writeBufferSpace();
-        
-        sz = sz > available ? available : sz;
-        Memory data = this->read((int)sz);
-        
-        client.getPtr()->send(data.operator char *(), data.length());
+        if (!buffer.length()) {
+            size_t sz = client.getPtr()->writeBufferSpace();
+            
+            sz = sz > available ? available : sz;
+            Memory data = this->read((int)sz);
+            
+            int sent = client.getPtr()->send(data.operator char *(), data.length());
+            
+            if (sent<data.length()) {
+                ByteArray ba(data.operator char *(), (int)data.length());
+                buffer.append(ba.subBytes(sent));
+            }
+        } else {
+            int sent = client.getPtr()->send(buffer.operator char *(), buffer.length());
+            if (sent)
+                buffer = buffer.subBytes(sent);
+        }
     }
     
     void Socks5Server::onConnected(Socket *socket) {

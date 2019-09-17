@@ -39,6 +39,8 @@
 		97D534C52268E2BC00671859 /* Socks5Server.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534C32268E2BC00671859 /* Socks5Server.h */; };
 		97D534C82268E2D400671859 /* Scoks5Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97D534C62268E2D400671859 /* Scoks5Client.cpp */; };
 		97D534C92268E2D400671859 /* Scoks5Client.h in Headers */ = {isa = PBXBuildFile; fileRef = 97D534C72268E2D400671859 /* Scoks5Client.h */; };
+		97E067EF22B00E28001377B2 /* Server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97E067ED22B00E28001377B2 /* Server.cpp */; };
+		97E067F222B00E36001377B2 /* Client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 97E067F022B00E36001377B2 /* Client.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -83,6 +85,10 @@
 		97D534C62268E2D400671859 /* Scoks5Client.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Scoks5Client.cpp; sourceTree = "<group>"; };
 		97D534C72268E2D400671859 /* Scoks5Client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Scoks5Client.h; sourceTree = "<group>"; };
 		97D534CA2269805500671859 /* Structures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Structures.h; sourceTree = "<group>"; };
+		97E067ED22B00E28001377B2 /* Server.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Server.cpp; sourceTree = "<group>"; };
+		97E067EE22B00E28001377B2 /* Server.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Server.h; sourceTree = "<group>"; };
+		97E067F022B00E36001377B2 /* Client.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Client.cpp; sourceTree = "<group>"; };
+		97E067F122B00E36001377B2 /* Client.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Client.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +118,7 @@
 		973DEA3422AA2F3400411B1C /* UnitTests */ = {
 			isa = PBXGroup;
 			children = (
+				97E067EC22B00DF9001377B2 /* DataLoopServer */,
 				973DEA4122AA348D00411B1C /* Sock5ProxyServer */,
 				973DEA3522AA2F3400411B1C /* main.cpp */,
 			);
@@ -206,6 +213,17 @@
 				979F35B8226A4B9A001F093B /* ClientSocket.cpp */,
 			);
 			path = socks5;
+			sourceTree = "<group>";
+		};
+		97E067EC22B00DF9001377B2 /* DataLoopServer */ = {
+			isa = PBXGroup;
+			children = (
+				97E067EE22B00E28001377B2 /* Server.h */,
+				97E067ED22B00E28001377B2 /* Server.cpp */,
+				97E067F122B00E36001377B2 /* Client.h */,
+				97E067F022B00E36001377B2 /* Client.cpp */,
+			);
+			path = DataLoopServer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -315,7 +333,9 @@
 				973DEA4822AA372900411B1C /* Socks5Server.cpp in Sources */,
 				973DEA5022AA519300411B1C /* UsernamePasswordLoader.cpp in Sources */,
 				973DEA4F22AA517C00411B1C /* ClientSocket.cpp in Sources */,
+				97E067F222B00E36001377B2 /* Client.cpp in Sources */,
 				973DEA4422AA34FD00411B1C /* Server.cpp in Sources */,
+				97E067EF22B00E28001377B2 /* Server.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -435,6 +455,7 @@
 					"\"$(SRCROOT)/../LibNrCore/\"",
 					"\"$(SRCROOT)/../LibNrDebug/\"",
 					"\"$(SRCROOT)/../LibNrEvent/\"",
+					"\"$(SRCROOT)/\"",
 					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
@@ -496,6 +517,7 @@
 					"\"$(SRCROOT)/../LibNrCore/\"",
 					"\"$(SRCROOT)/../LibNrDebug/\"",
 					"\"$(SRCROOT)/../LibNrEvent/\"",
+					"\"$(SRCROOT)/\"",
 					/usr/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (

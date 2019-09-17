@@ -62,6 +62,8 @@ namespace nrcore {
         Ref<BlockLoaderBase> block_loader;
         Ref<RingBuffer> proxy_buffer;
         
+        ByteArray buffer;
+        
         void selectAuthMethod(CLIENT_INIT *client_init);
         
         void auth(size_t available);

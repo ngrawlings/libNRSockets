@@ -56,8 +56,7 @@ namespace nrcore {
     }
 
     Socket::~Socket() {
-        send_lock.lock(0, "d");
-        recv_lock.lock(0, "d");
+        close();
         
         if (cb_interface)
             cb_interface->onDestroyed(this);
@@ -77,11 +76,14 @@ namespace nrcore {
         return ret;
     }
 
+    int Socket::send(Memory data) {
+        return send(data.operator char *(), data.length());
+    }
+    
     int Socket::send(const char* buffer, size_t len) {
         size_t space = 0, add = 0;
         
-        send_lock.lock();
-        
+        Mutex::Lock lock(send_lock);
         if (event_write) {
             space = out_buffer.freeSpace();
             if (space && event_write) {
@@ -90,9 +92,7 @@ namespace nrcore {
                 event_add(event_write, NULL);
             }
         }
-        
-        send_lock.release();
-        
+
         return (int)add;
     }
     
@@ -117,21 +117,14 @@ namespace nrcore {
     }
 
     void Socket::ReceiveTask::run() {
-        lock.lock();
-        socket->recv_lock.lock(0, "run");
+        Mutex::Lock lock(socket->recv_lock);
         try {
             while (socket->in_buffer.length())
                 socket->onReceive();
         } catch (...) {
             printf("RT: Error\r\n");
         }
-        socket->recv_lock.release();
         finished();
-        lock.release();
-    }
-
-    bool Socket::ReceiveTask::isLocked() {
-        return lock.isLocked();
     }
     
     void Socket::enableEvents() {
@@ -142,13 +135,12 @@ namespace nrcore {
     }
 
     void Socket::receive() {
-        size_t fs = in_buffer.freeSpace();
-        
         if (recv_lock.tryLock("receive")) {
+            size_t fs = in_buffer.freeSpace();
             if (fs > 0) {
-                char buf[64];
+                char buf[fs];
                 
-                ssize_t s = ::recv(fd, buf, fs > 64 ? 64 :fs , 0);
+                ssize_t s = ::recv(fd, buf, fs, 0);
                 if (s == 0) {
                     close();
                     event_del(event_read);
@@ -170,9 +162,7 @@ namespace nrcore {
     void Socket::sendReady() {
         try {
             if (out_buffer.length()) {
-                send_lock.lock();
-                recv_lock.lock(0, "sendReady");
-                recv_lock.release();
+                Mutex::Lock lock(send_lock);
                 if (out_buffer.length()) {
                     int flags = 0;
                     Memory data = out_buffer.getDataUntilEnd();
@@ -186,8 +176,6 @@ namespace nrcore {
                     if (s >= 0 && out_buffer.length())
                         event_add(event_write, NULL);
                 }
-                
-                send_lock.release();
             }
         } catch (...) {
             printf("err\r\n");

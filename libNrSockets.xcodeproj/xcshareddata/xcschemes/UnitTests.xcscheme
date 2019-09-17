@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
-               BuildableName = "libnrsockets.a"
-               BlueprintName = "NrSockets"
+               BlueprintIdentifier = "973DEA3222AA2F3400411B1C"
+               BuildableName = "UnitTests"
+               BlueprintName = "UnitTests"
                ReferencedContainer = "container:libNrSockets.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
-            BuildableName = "libNrSockets.a"
-            BlueprintName = "NrSockets"
-            ReferencedContainer = "container:NrSockets.xcodeproj">
+            BlueprintIdentifier = "973DEA3222AA2F3400411B1C"
+            BuildableName = "UnitTests"
+            BlueprintName = "UnitTests"
+            ReferencedContainer = "container:libNrSockets.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -51,15 +51,22 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "97B4666E1C9AE41D00DD2C30"
-            BuildableName = "libnrsockets.a"
-            BlueprintName = "NrSockets"
+            BlueprintIdentifier = "973DEA3222AA2F3400411B1C"
+            BuildableName = "UnitTests"
+            BlueprintName = "UnitTests"
             ReferencedContainer = "container:libNrSockets.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
+      <CommandLineArguments>
+         <CommandLineArgument
+            argument = "c"
+            isEnabled = "YES">
+         </CommandLineArgument>
+      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -69,6 +76,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "973DEA3222AA2F3400411B1C"
+            BuildableName = "UnitTests"
+            BlueprintName = "UnitTests"
+            ReferencedContainer = "container:libNrSockets.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

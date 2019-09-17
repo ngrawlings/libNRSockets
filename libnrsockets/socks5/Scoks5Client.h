@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 
+#include <libnrcore/memory/ByteArray.h>
 #include <libnrsockets/Listener.h>
 #include <libnrsockets/Socket.h>
 
@@ -25,7 +26,7 @@ namespace nrcore {
         void onWriteReady();
         
     private:
-        
+        ByteArray buffer;
     };
 
 }

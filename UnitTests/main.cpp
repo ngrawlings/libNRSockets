@@ -14,30 +14,60 @@
 
 #include <libnrdebug/UnitTests.h>
 
+#include "DataLoopServer/Server.h"
+#include "DataLoopServer/Client.h"
+
 using namespace nrcore;
 
-Ref<Server> server;
+Ref<Server> socks5_server;
+EventBase ev;
 
 bool testLaunchSoxks5ProxyServer() {
-    server = Ref<Server>(new Server);
-    server.getPtr()->runEventLoop(false);
+    socks5_server = Ref<Server>(new Server);
+    socks5_server.getPtr()->runEventLoop(true);
     
     return true;
 }
 
+bool testCloseSock5ProxyServer() {
+    sleep(30);
+    
+    socks5_server.getPtr()->breakEventLoop();
+    socks5_server.getPtr()->stop();
+    socks5_server = Ref<Server>(0);
+    
+    return true;
+}
+
+bool testLaunchListenServer() {
+    DataLoopServer server(&ev);
+    server.runEventLoop(false);
+    return true;
+}
+
+bool testLaunchClient() {
+    Client c;
+    
+    ev.runEventLoop(false);
+    
+    return true;
+}
+
+
 int main(int argc, const char * argv[]) {
     Task::staticInit();
-    Thread::init(4);
+    Thread::init(8);
+    Socket::init(&ev);
     
     UnitTests tests;
-    tests.addTest("testLaunchSoxks5ProxyServer", testLaunchSoxks5ProxyServer);
+    //tests.addTest("testLaunchSoxks5ProxyServer", testLaunchSoxks5ProxyServer);
+    //tests.addTest("testCloseSock5ProxyServer", testCloseSock5ProxyServer);
+    if (argc == 2 && argv[1][0] == 'c') {
+        tests.addTest("testLaunchClient", testLaunchClient);
+    } else
+        tests.addTest("testLaunchListenServer", testLaunchListenServer);
+    
     tests.run();
-    
-    sleep(120);
-    
-    server.getPtr()->breakEventLoop();
-    server.getPtr()->stop();
-    server = Ref<Server>(0);
     
     Thread::stopAllThreads();
     Thread::staticCleanUp();

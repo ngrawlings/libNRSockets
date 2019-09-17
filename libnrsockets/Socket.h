@@ -44,9 +44,12 @@ namespace nrcore {
         Memory read(int max);
         
         size_t writeBufferSpace();
+        int send(Memory data);
         int send(const char* buffer, size_t len);
         
         void setCallbackInterface(CallbackInterface *cb);
+        
+        void close();
         
         static void init(EventBase *event_base);
         static void cleanup();
@@ -61,11 +64,8 @@ namespace nrcore {
             
             void run();
             
-            bool isLocked();
-            
         private:
             Socket *socket;
-            Mutex lock;
         };
         
     protected:
@@ -82,8 +82,6 @@ namespace nrcore {
         virtual void onWriteReady() = 0;
         void receive();
         void sendReady();
-        
-        void close();
         
     private:
         void enableEvents();

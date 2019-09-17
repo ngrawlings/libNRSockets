@@ -20,18 +20,32 @@ namespace nrcore {
     }
     
     void ClientSocket::onReceive() {
-        size_t available = this->available();
-        
-        size_t sz = server->writeBufferSpace();
-        
-        sz = sz > available ? available : sz;
-        Memory data = this->read((int)sz);
-        
-        server->send(data.operator char *(), data.length());
+        if (!buffer.length()) {
+            size_t available = this->available();
+            
+            size_t sz = server->writeBufferSpace();
+            
+            sz = sz > available ? available : sz;
+            Memory data = this->read((int)sz);
+            
+            int sent = server->send(data.operator char *(), data.length());
+            
+            if (sent<data.length()) {
+                ByteArray ba(data.operator char *(), (int)data.length());
+                buffer.append(ba.subBytes(sent));
+            }
+        } else {
+            int sent = server->send(buffer.operator char *(), buffer.length());
+            if (sent)
+                buffer = buffer.subBytes(sent);
+        }
     }
     
     void ClientSocket::onWriteReady() {
-        
+        if (buffer.length()) {
+            int sent = server->send(buffer.operator char *(), buffer.length());
+            buffer = buffer.subBytes(sent);
+        }
     }
     
 }

@@ -11,8 +11,9 @@
 
 namespace nrcore {
     
-    ClientSocket::ClientSocket(Socks5Server *server, Address address, unsigned short port) : Socket(address, port) {
+    ClientSocket::ClientSocket(Socks5Server *server, Address address, unsigned short port) : Socket() {
         this->server = server;
+        this->connect(address, port);
     }
     
     ClientSocket::~ClientSocket() {

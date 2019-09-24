@@ -18,7 +18,7 @@ namespace nrcore {
 
     EventBase* Socket::event_base;
     
-    Socket::Socket(int _fd) : in_buffer(4096), out_buffer(4096), recv_task(this), cb_interface(0) {
+    Socket::Socket(int _fd, CallbackInterface *cb) : in_buffer(4096), out_buffer(4096), recv_task(this), cb_interface(cb) {
         this->fd = _fd;
         enableEvents();
         
@@ -29,11 +29,22 @@ namespace nrcore {
             cb_interface->onConnected(this);
     }
 
-    Socket::Socket(Address address, unsigned short port) : in_buffer(4096), out_buffer(4096), recv_task(this), cb_interface(0) {
+    Socket::Socket(CallbackInterface *cb) : in_buffer(4096), out_buffer(4096), recv_task(this), cb_interface(cb) {
+        
+    }
+
+    Socket::~Socket() {
+        close();
+        
+        if (cb_interface)
+            cb_interface->onDestroyed(this);
+    }
+    
+    bool Socket::connect(Address address, unsigned short port) {
         int type = address.getType() == Address::IPV4 ? AF_INET : AF_INET6;
         this->fd = socket(type, SOCK_STREAM, 0);
         if (this->fd == -1)
-            throw Exception(-1, "Failed to create socket");
+            return false;
         
         struct sockaddr_in ipa;
         memset(&ipa, 0, sizeof(sockaddr_in));
@@ -42,9 +53,9 @@ namespace nrcore {
         ipa.sin_len = sizeof(sockaddr_in);
         memcpy(&ipa.sin_addr.s_addr, address.getAddr(), type == AF_INET ? 4 : 16);
         
-        int res = connect(this->fd, (const struct sockaddr *)&ipa, sizeof(sockaddr_in));
+        int res = ::connect(this->fd, (const struct sockaddr *)&ipa, sizeof(sockaddr_in));
         if (res == -1)
-            throw Exception(errno, "Faield to connect");
+            return false;
         
         enableEvents();
         
@@ -53,13 +64,8 @@ namespace nrcore {
         
         if (cb_interface)
             cb_interface->onConnected(this);
-    }
-
-    Socket::~Socket() {
-        close();
         
-        if (cb_interface)
-            cb_interface->onDestroyed(this);
+        return true;
     }
 
     size_t Socket::available() {
@@ -119,8 +125,9 @@ namespace nrcore {
     void Socket::ReceiveTask::run() {
         Mutex::Lock lock(socket->recv_lock);
         try {
-            while (socket->in_buffer.length())
+            while (socket->in_buffer.length()) {
                 socket->onReceive();
+            }
         } catch (...) {
             printf("RT: Error\r\n");
         }
@@ -155,6 +162,7 @@ namespace nrcore {
             }
             
             recv_lock.release();
+            printf("running task\n");
             Thread::runTask(&recv_task);
         }
     }

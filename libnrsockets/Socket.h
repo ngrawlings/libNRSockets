@@ -36,9 +36,11 @@ namespace nrcore {
             virtual void onDestroyed(Socket *socket) {};
         };
         
-        Socket(int _fd);
-        Socket(Address address, unsigned short port);
+        Socket(int _fd, CallbackInterface *cb=0);
+        Socket(CallbackInterface *cb=0);
         virtual ~Socket();
+        
+        bool connect(Address address, unsigned short port);
         
         size_t available();
         Memory read(int max);
@@ -52,7 +54,6 @@ namespace nrcore {
         void close();
         
         static void init(EventBase *event_base);
-        static void cleanup();
         
     protected:
         class ReceiveTask : public Task {

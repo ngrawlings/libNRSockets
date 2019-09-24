@@ -20,7 +20,7 @@
 using namespace nrcore;
 
 Ref<Server> socks5_server;
-EventBase ev;
+EventBase *ev;
 
 bool testLaunchSoxks5ProxyServer() {
     socks5_server = Ref<Server>(new Server);
@@ -40,7 +40,7 @@ bool testCloseSock5ProxyServer() {
 }
 
 bool testLaunchListenServer() {
-    DataLoopServer server(&ev);
+    DataLoopServer server(ev);
     server.runEventLoop(false);
     return true;
 }
@@ -48,7 +48,7 @@ bool testLaunchListenServer() {
 bool testLaunchClient() {
     Client c;
     
-    ev.runEventLoop(false);
+    ev->runEventLoop(false);
     
     return true;
 }
@@ -57,7 +57,10 @@ bool testLaunchClient() {
 int main(int argc, const char * argv[]) {
     Task::staticInit();
     Thread::init(8);
-    Socket::init(&ev);
+    
+    ev = new EventBase();
+    
+    Socket::init(ev);
     
     UnitTests tests;
     //tests.addTest("testLaunchSoxks5ProxyServer", testLaunchSoxks5ProxyServer);

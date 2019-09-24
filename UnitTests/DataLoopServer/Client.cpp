@@ -10,7 +10,8 @@
 #include <libnrsockets/Address.h>
 #include <libnrcore/memory/Memory.h>
 
-Client::Client() : Socket(Address(Address::ADDR, "127.0.0.1"), 12123){
+Client::Client() : Socket(){
+    this->connect(Address(Address::ADDR, "127.0.0.1"), 12123);
     seed(Memory::getRandomBytes(4096));
 }
 

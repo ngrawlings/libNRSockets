@@ -8,6 +8,7 @@
 
 #include "Socket.h"
 
+#include <fcntl.h>
 #include <time.h>
 #include <stdio.h>
 #include <netinet/tcp.h>
@@ -61,6 +62,12 @@ namespace nrcore {
         
         int flag = 1;
         setsockopt(0, IPPROTO_TCP, TCP_NODELAY, (char *) &flag, sizeof(int));
+        
+        int flags = fcntl(fd, F_GETFL, 0);
+        if (flags == -1)
+                return false;
+        
+        fcntl(fd, F_SETFL, flags | O_NONBLOCK);
         
         if (cb_interface)
             cb_interface->onConnected(this);
@@ -160,13 +167,12 @@ namespace nrcore {
                     fd = 0;
                 } else if (s == -1 && errno !=EAGAIN) {
                     close();
-                } else {
+                } else if (s != -1) {
                     fs -= in_buffer.append(buf, s);
                 }
             }
             
             recv_lock.release();
-            printf("running task\n");
             Thread::runTask(&recv_task);
         }
     }
@@ -205,6 +211,12 @@ namespace nrcore {
 
         if (fd)
             ::close(fd);
+        
+        if (event_read) {
+            event_del(event_read);
+            event_free(event_read);
+            event_read = 0;
+        }
         
         if (event_write) {
             event_del(event_write);

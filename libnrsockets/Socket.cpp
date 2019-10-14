@@ -68,6 +68,10 @@ namespace nrcore {
         return true;
     }
 
+    void Socket::poll() {
+        receive();
+    }
+
     size_t Socket::available() {
         return in_buffer.length();
     }

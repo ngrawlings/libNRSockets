@@ -41,6 +41,7 @@ namespace nrcore {
         virtual ~Socket();
         
         bool connect(Address address, unsigned short port);
+        void poll();
         
         size_t available();
         Memory read(int max);

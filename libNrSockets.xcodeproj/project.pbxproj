@@ -288,7 +288,7 @@
 		97B466671C9AE41D00DD2C30 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = "Liquidsoft Studio";
 				TargetAttributes = {
 					973DEA3222AA2F3400411B1C = {
@@ -368,6 +368,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4MASABRRSM;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -391,6 +392,7 @@
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4MASABRRSM;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

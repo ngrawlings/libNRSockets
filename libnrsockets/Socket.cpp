@@ -203,10 +203,16 @@ namespace nrcore {
     }
 
     void Socket::close() {
-        bool locked = false;
+        bool recv_locked = false, send_locked = false;
+        
+        if (!recv_lock.isLocked() || !recv_lock.isLockedByMe()) {
+            recv_lock.lock();
+            recv_locked = true;
+        }
+        
         if (!send_lock.isLocked() || !send_lock.isLockedByMe()) {
             send_lock.lock();
-            locked = true;
+            send_locked = true;
         }
 
         if (fd)
@@ -224,7 +230,10 @@ namespace nrcore {
             event_write = 0;
         }
         
-        if (locked)
+        if (recv_locked)
+            recv_lock.release();
+        
+        if (send_locked)
             send_lock.release();
         
         if (cb_interface)

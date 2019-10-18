@@ -210,7 +210,8 @@ namespace nrcore {
                     this->send((const char*)&reply, sizeof(SERVER_RESPONSE));
                     
                     // TODO: set the actual address
-                    const char *addr = (char[]){0, 0, 0, 0, 0, 0};
+                    char addr[6];
+                    memset(addr, 0, 6);
                     this->send(addr, 6);
                     
                 } catch (Exception e) {

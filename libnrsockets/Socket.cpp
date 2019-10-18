@@ -21,6 +21,9 @@ namespace nrcore {
     
     Socket::Socket(int _fd, CallbackInterface *cb) : in_buffer(4096), out_buffer(4096), recv_task(this), cb_interface(cb) {
         this->fd = _fd;
+        event_read = 0;
+        event_write = 0;
+        
         enableEvents();
         
         int flag = 1;
@@ -31,7 +34,8 @@ namespace nrcore {
     }
 
     Socket::Socket(CallbackInterface *cb) : in_buffer(4096), out_buffer(4096), recv_task(this), cb_interface(cb) {
-        
+        event_read = 0;
+        event_write = 0;
     }
 
     Socket::~Socket() {
@@ -51,7 +55,6 @@ namespace nrcore {
         memset(&ipa, 0, sizeof(sockaddr_in));
         ipa.sin_family = type;
         ipa.sin_port = htons(port);
-        ipa.sin_len = sizeof(sockaddr_in);
         memcpy(&ipa.sin_addr.s_addr, address.getAddr(), type == AF_INET ? 4 : 16);
         
         int res = ::connect(this->fd, (const struct sockaddr *)&ipa, sizeof(sockaddr_in));
@@ -161,10 +164,6 @@ namespace nrcore {
                 ssize_t s = ::recv(fd, buf, fs, 0);
                 if (s == 0) {
                     close();
-                    event_del(event_read);
-                    event_free(event_read);
-                    event_read = 0;
-                    fd = 0;
                 } else if (s == -1 && errno !=EAGAIN) {
                     close();
                 } else if (s != -1) {
@@ -229,6 +228,8 @@ namespace nrcore {
             event_free(event_write);
             event_write = 0;
         }
+        
+        fd = 0;
         
         if (recv_locked)
             recv_lock.release();
